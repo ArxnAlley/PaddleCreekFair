@@ -1,0 +1,68 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 1600 150"
+    preserveAspectRatio="none"
+>
+    <defs>
+        <linearGradient id="endFade" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="white" stop-opacity="0"/>
+            <stop offset="0.025" stop-color="white" stop-opacity="0.82"/>
+            <stop offset="0.06" stop-color="white"/>
+            <stop offset="0.94" stop-color="white"/>
+            <stop offset="0.978" stop-color="white" stop-opacity="0.76"/>
+            <stop offset="1" stop-color="white" stop-opacity="0"/>
+        </linearGradient>
+
+        <filter id="paintEdge" x="-3%" y="-24%" width="106%" height="148%">
+            <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.008 0.085"
+                numOctaves="3"
+                seed="27"
+                result="noise"
+            />
+            <feDisplacementMap
+                in="SourceGraphic"
+                in2="noise"
+                scale="10"
+                xChannelSelector="R"
+                yChannelSelector="B"
+            />
+        </filter>
+
+        <mask id="paintMask">
+            <rect width="1600" height="150" fill="url(#endFade)"/>
+        </mask>
+    </defs>
+
+    <g mask="url(#paintMask)" filter="url(#paintEdge)">
+        <path
+            fill="#757761"
+            d="M6 47C63 31 114 35 167 38C252 43 327 29 415 34C511 39 586 47 674 39C772 30 867 37 955 42C1058 48 1140 34 1230 37C1325 39 1418 32 1501 42C1543 47 1573 54 1596 61L1595 103C1547 114 1496 109 1447 106C1366 101 1288 116 1207 109C1115 101 1035 110 946 111C849 111 770 102 675 108C580 114 494 102 402 108C308 113 225 100 141 107C88 112 44 104 5 96Z"
+        />
+
+        <path
+            fill="#858773"
+            opacity="0.42"
+            d="M25 58C112 45 190 56 278 49C383 41 473 58 566 50C652 44 736 52 826 48C929 44 1021 58 1114 49C1213 39 1311 56 1406 48C1480 42 1536 53 1582 67L1580 85C1509 78 1449 88 1382 86C1275 82 1187 92 1084 88C983 84 898 93 797 89C703 85 620 94 523 89C429 84 341 93 244 88C157 83 91 92 22 84Z"
+        />
+
+        <path
+            fill="#686b57"
+            opacity="0.24"
+            d="M0 80C74 69 139 78 213 73C302 67 389 82 475 75C565 68 643 79 730 75C816 70 899 82 988 75C1081 68 1165 81 1253 74C1333 68 1424 80 1503 72C1544 68 1577 74 1600 82L1600 99C1527 90 1462 102 1392 97C1306 92 1229 104 1146 99C1053 93 974 105 883 99C792 93 709 105 619 100C529 95 449 106 359 99C269 92 185 104 100 98C62 95 29 96 0 99Z"
+        />
+
+        <g fill="none" stroke="#626552" stroke-linecap="round" opacity="0.2">
+            <path d="M8 54C71 45 111 48 170 50" stroke-width="5"/>
+            <path d="M12 65C84 56 128 63 202 59" stroke-width="3"/>
+            <path d="M1388 51C1465 45 1531 54 1591 68" stroke-width="4"/>
+            <path d="M1424 95C1482 99 1534 94 1590 84" stroke-width="3"/>
+        </g>
+
+        <g fill="none" stroke="#a3a48f" stroke-linecap="round" opacity="0.18">
+            <path d="M42 97C112 102 169 94 236 99" stroke-width="4"/>
+            <path d="M1350 103C1435 108 1513 104 1583 95" stroke-width="5"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,53 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 640 120"
+    preserveAspectRatio="none"
+>
+    <defs>
+        <linearGradient id="strokeFade" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="white" stop-opacity="0"/>
+            <stop offset="0.05" stop-color="white" stop-opacity="0.7"/>
+            <stop offset="0.18" stop-color="white"/>
+            <stop offset="0.82" stop-color="white"/>
+            <stop offset="0.95" stop-color="white" stop-opacity="0.62"/>
+            <stop offset="1" stop-color="white" stop-opacity="0"/>
+        </linearGradient>
+
+        <filter id="bristleEdge" x="-4%" y="-30%" width="108%" height="160%">
+            <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.012 0.14"
+                numOctaves="3"
+                seed="14"
+                result="bristleNoise"
+            />
+            <feDisplacementMap
+                in="SourceGraphic"
+                in2="bristleNoise"
+                scale="13"
+                xChannelSelector="R"
+                yChannelSelector="B"
+            />
+        </filter>
+
+        <mask id="strokeMask">
+            <rect width="640" height="120" fill="url(#strokeFade)"/>
+        </mask>
+    </defs>
+
+    <g mask="url(#strokeMask)" filter="url(#bristleEdge)">
+
+        <path
+            d="M6 74C118 40 214 30 328 34C440 38 528 52 634 40C540 84 430 96 320 92C212 88 122 78 6 74Z"
+            fill="#e8c3ba"
+            opacity="0.62"
+        />
+
+        <path
+            d="M28 62C140 36 236 28 344 32C446 36 524 46 618 38C532 70 428 82 322 78C218 74 138 68 28 62Z"
+            fill="#f0d3cc"
+            opacity="0.5"
+        />
+
+    </g>
+</svg>

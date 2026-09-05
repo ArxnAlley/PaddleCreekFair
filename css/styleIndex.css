@@ -1,0 +1,5116 @@
+/* ============================================================
+   PADDLE CREEK PAINTS — styleIndex.css
+
+   The whole document is one painted wall, lit from high left.
+   Work is propped, hung and leaned against it on rails and
+   ledges. Two regions are the same wall repainted at full
+   strength: deep sage, then deep clay.
+============================================================ */
+
+
+/* ============================================================
+   VARIABLES
+============================================================ */
+
+:root
+{
+
+    /* ── The wall ── */
+
+    --wallBase: #f1e2d3;
+
+    --wallHigh: #fdf5ed;
+
+    --wallLow: #e3cbb9;
+
+    --wallSage: #4a5142;
+
+    --wallSageDeep: #3a4034;
+
+    --wallClay: #8d4f47;
+
+    --wallClayDeep: #713c36;
+
+    /* ── Ink ── */
+
+    --inkDeep: #2b2320;
+
+    --inkBody: #4a3c35;
+
+    --inkSoft: #6d5b52;
+
+    --inkOnDark: #f7ede4;
+
+    --inkSoftOnSage: #d5c9b8;
+
+    --inkSoftOnClay: #eed9d0;
+
+    /* ── Paint ── */
+
+    --rose: #b97d76;
+
+    --roseDeep: #9e5a52;
+
+    --roseInk: #8d463f;
+
+    --blush: #e8bfb5;
+
+    --blushPale: #f6ddd6;
+
+    --sage: #686b57;
+
+    --sageLight: #a3a48f;
+
+    --brass: #ab8f63;
+
+    /* Tint bases. Every shadow, hairline and lighting wash derives its alpha
+       from one of these rather than repeating a literal triplet. */
+
+    --shadowInk: 74, 48, 38;
+
+    --ruleInk: 140, 106, 90;
+
+    --brassLight: #d3ba8c;
+
+    --brassMid: #8a7049;
+
+    --brassDark: #5d4a2f;
+
+    --sageFaint: #c5c4af;
+
+    /* ── The depth ladder ──
+       Five rungs, light from high left, shadows tinted from the
+       wall rather than black. Nothing may cast a shadow from a
+       rung it does not occupy. */
+
+    --shadowLedge:
+        1px 2px 2px rgba(var(--shadowInk), 0.14),
+        3px 5px 9px rgba(var(--shadowInk), 0.10);
+
+    --shadowHang:
+        2px 4px 5px rgba(var(--shadowInk), 0.16),
+        8px 15px 22px rgba(var(--shadowInk), 0.13);
+
+    --shadowProp:
+        3px 5px 6px rgba(var(--shadowInk), 0.17),
+        11px 19px 28px rgba(var(--shadowInk), 0.15);
+
+    --shadowLift:
+        6px 10px 14px rgba(var(--shadowInk), 0.18),
+        26px 42px 62px rgba(var(--shadowInk), 0.26);
+
+    --shadowLedgeDark:
+        1px 2px 3px rgba(15, 18, 12, 0.30),
+        4px 7px 14px rgba(15, 18, 12, 0.22);
+
+    /* ── Type ── */
+
+    --fontDisplay: 'Sorts Mill Goudy', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+
+    --fontBody: 'Cardo', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+
+    --fontScript: 'Parisienne', 'Snell Roundhand', 'Apple Chancery', cursive;
+
+    --stepDisplay: clamp(2.5rem, 5.3vw, 4.5rem);
+
+    --stepHeading: clamp(2rem, 4.3vw, 3.3rem);
+
+    --stepSub: clamp(1.22rem, 1.9vw, 1.55rem);
+
+    --stepSubhead: clamp(1.6rem, 2.8vw, 2.25rem);
+
+    --stepPageHead: clamp(2.3rem, 4.8vw, 3.9rem);
+
+    --stepBody: clamp(1.02rem, 0.94vw + 0.7rem, 1.16rem);
+
+    --stepSmall: 0.94rem;
+
+    --stepLabel: 0.73rem;
+
+    /* ── Rhythm ── */
+
+    --gutter: clamp(1.25rem, 4.4vw, 4rem);
+
+    --shellMax: 78rem;
+
+    --sectionPad: clamp(3.75rem, 6.4vw, 6.5rem);
+
+    /* ── Painted grain, tiled so it stays one continuous wall ── */
+
+    --grain:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+
+    --ease: cubic-bezier(0.16, 0.84, 0.32, 1);
+
+}
+
+
+/* ============================================================
+   RESET
+============================================================ */
+
+*,
+*::before,
+*::after
+{
+
+    box-sizing: border-box;
+
+}
+
+html
+{
+
+    -webkit-text-size-adjust: 100%;
+
+    scroll-behavior: smooth;
+
+    scroll-padding-top: 7.5rem;
+
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+figure,
+ul,
+ol
+{
+
+    margin: 0;
+
+    padding: 0;
+
+}
+
+ul,
+ol
+{
+
+    list-style: none;
+
+}
+
+img,
+svg
+{
+
+    display: block;
+
+    max-width: 100%;
+
+}
+
+img
+{
+
+    height: auto;
+
+}
+
+button
+{
+
+    font: inherit;
+
+    color: inherit;
+
+    background: none;
+
+    border: 0;
+
+    cursor: pointer;
+
+}
+
+a
+{
+
+    color: inherit;
+
+}
+
+
+/* ============================================================
+   TYPOGRAPHY & PAGE GROUND
+============================================================ */
+
+body
+{
+
+    position: relative;
+
+    font-family: var(--fontBody);
+
+    font-size: var(--stepBody);
+
+    line-height: 1.68;
+
+    color: var(--inkBody);
+
+    background-color: var(--wallBase);
+
+    overflow-x: clip;
+
+}
+
+html
+{
+
+    overflow-x: clip;
+
+}
+
+/* The single limewash field: one light source, one grain,
+   running behind every section of the document. */
+
+body::before
+{
+
+    content: '';
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    background-image:
+        radial-gradient(120% 90% at 8% -10%, var(--wallHigh) 0%, rgba(253, 245, 237, 0) 58%),
+        radial-gradient(85% 60% at 92% 22%, rgba(232, 191, 181, 0.30) 0%, rgba(232, 191, 181, 0) 60%),
+        radial-gradient(100% 80% at 105% 108%, var(--wallLow) 0%, rgba(227, 203, 185, 0) 62%);
+
+}
+
+body::after
+{
+
+    content: '';
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    opacity: 0.5;
+
+    mix-blend-mode: multiply;
+
+    background-image: var(--grain);
+
+    background-size: 180px 180px;
+
+}
+
+.siteHeader,
+main,
+.siteFooter,
+.pieceViewer
+{
+
+    position: relative;
+
+    z-index: 1;
+
+}
+
+h1,
+h2,
+h3
+{
+
+    font-family: var(--fontDisplay);
+
+    font-weight: 400;
+
+    line-height: 1.06;
+
+    color: var(--inkDeep);
+
+    letter-spacing: -0.012em;
+
+    text-wrap: balance;
+
+}
+
+p
+{
+
+    text-wrap: pretty;
+
+}
+
+em.scriptLine
+{
+
+    display: block;
+
+    font-family: var(--fontScript);
+
+    font-style: normal;
+
+    font-size: 1.16em;
+
+    line-height: 0.98;
+
+    color: var(--roseInk);
+
+    letter-spacing: 0.005em;
+
+}
+
+::selection
+{
+
+    color: var(--wallHigh);
+
+    background-color: var(--roseDeep);
+
+}
+
+:focus-visible
+{
+
+    outline: 2px solid var(--roseDeep);
+
+    outline-offset: 3px;
+
+    border-radius: 2px;
+
+}
+
+/* The wet edge, as a shared mark. Anything that can be acted on paints one on
+   when it becomes active. */
+
+.buttonPainted,
+.buttonLined,
+.navAction
+{
+
+    position: relative;
+
+}
+
+.buttonPainted::after,
+.buttonLined::after,
+.navAction::after
+{
+
+    content: '';
+
+    position: absolute;
+
+    right: 0.7rem;
+
+    bottom: -0.42rem;
+
+    left: 0.7rem;
+
+    height: 0.42rem;
+
+    background-color: var(--roseDeep);
+
+    -webkit-mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    -webkit-mask-size: 100% 100%;
+
+    mask-size: 100% 100%;
+
+    -webkit-mask-repeat: no-repeat;
+
+    mask-repeat: no-repeat;
+
+    opacity: 0;
+
+    transform: scaleX(0.3);
+
+    transform-origin: left center;
+
+    transition:
+        opacity 200ms var(--ease),
+        transform 320ms var(--ease);
+
+}
+
+.buttonPainted:hover::after,
+.buttonPainted:focus-visible::after,
+.buttonLined:hover::after,
+.buttonLined:focus-visible::after,
+.navAction:hover::after,
+.navAction:focus-visible::after
+{
+
+    opacity: 1;
+
+    transform: scaleX(1);
+
+}
+
+.buttonPaintedLight::after,
+.buttonLinedLight::after
+{
+
+    background-color: var(--blushPale);
+
+}
+
+.skipLink
+{
+
+    position: absolute;
+
+    top: 0.75rem;
+
+    left: 0.75rem;
+
+    z-index: 60;
+
+    padding: 0.7rem 1.1rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepSmall);
+
+    color: var(--inkOnDark);
+
+    background-color: var(--wallSage);
+
+    border-radius: 2px;
+
+    transform: translateY(-160%);
+
+    transition: transform 180ms var(--ease);
+
+}
+
+.skipLink:focus-visible
+{
+
+    transform: translateY(0);
+
+}
+
+
+/* ============================================================
+   SHARED — section heads, buttons, links, painted marks
+============================================================ */
+
+.sectionHead
+{
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+
+    align-items: end;
+
+    gap: clamp(1rem, 3vw, 3.5rem);
+
+}
+
+.sectionHeading
+{
+
+    font-size: var(--stepHeading);
+
+    margin-bottom: 1.1rem;
+
+}
+
+.sectionLede
+{
+
+    max-width: 46ch;
+
+    font-size: var(--stepSub);
+
+    line-height: 1.5;
+
+    color: var(--inkSoft);
+
+}
+
+/* ── The wet edge: the one mark that means "active", cut from
+      the studio's own bristled brush stroke ── */
+
+.linkPainted
+{
+
+    position: relative;
+
+    color: var(--roseInk);
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+}
+
+.linkPainted::after
+{
+
+    content: '';
+
+    position: absolute;
+
+    left: -0.12em;
+
+    right: -0.12em;
+
+    bottom: -0.34em;
+
+    height: 0.42em;
+
+    background-color: var(--rose);
+
+    -webkit-mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    -webkit-mask-size: 100% 100%;
+
+    mask-size: 100% 100%;
+
+    -webkit-mask-repeat: no-repeat;
+
+    mask-repeat: no-repeat;
+
+    transform: scaleX(0.34);
+
+    transform-origin: left center;
+
+    transition: transform 320ms var(--ease);
+
+}
+
+.linkPainted:hover::after,
+.linkPainted:focus-visible::after
+{
+
+    transform: scaleX(1);
+
+}
+
+.buttonPainted
+{
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0.95rem 1.9rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: 0.95rem;
+
+    letter-spacing: 0.09em;
+
+    text-transform: uppercase;
+
+    text-decoration: none;
+
+    color: var(--wallHigh);
+
+    background-color: var(--roseDeep);
+
+    border: 0;
+
+    border-radius: 1px;
+
+    box-shadow: var(--shadowLedge);
+
+    transition:
+        background-color 220ms var(--ease),
+        transform 220ms var(--ease),
+        box-shadow 220ms var(--ease);
+
+}
+
+.buttonPainted:hover,
+.buttonPainted:focus-visible
+{
+
+    background-color: var(--roseInk);
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadowHang);
+
+}
+
+.buttonPainted:active
+{
+
+    transform: translateY(0);
+
+    box-shadow: var(--shadowLedge);
+
+}
+
+.buttonPaintedLight
+{
+
+    color: var(--wallClayDeep);
+
+    background-color: var(--wallHigh);
+
+}
+
+.buttonPaintedLight:hover,
+.buttonPaintedLight:focus-visible
+{
+
+    color: var(--wallClayDeep);
+
+    background-color: var(--blushPale);
+
+}
+
+.buttonLined
+{
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0.95rem 1.7rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: 0.95rem;
+
+    letter-spacing: 0.09em;
+
+    text-transform: uppercase;
+
+    text-decoration: none;
+
+    color: var(--inkDeep);
+
+    border: 1px solid rgba(157, 112, 100, 0.5);
+
+    border-radius: 1px;
+
+    transition:
+        border-color 220ms var(--ease),
+        background-color 220ms var(--ease),
+        color 220ms var(--ease);
+
+}
+
+.buttonLined:hover,
+.buttonLined:focus-visible
+{
+
+    color: var(--roseInk);
+
+    background-color: rgba(246, 221, 214, 0.42);
+
+    border-color: var(--rose);
+
+}
+
+.buttonLinedLight
+{
+
+    color: var(--inkOnDark);
+
+    border-color: rgba(213, 201, 184, 0.55);
+
+}
+
+.buttonLinedLight:hover,
+.buttonLinedLight:focus-visible
+{
+
+    color: var(--wallSageDeep);
+
+    background-color: var(--inkOnDark);
+
+    border-color: var(--inkOnDark);
+
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.siteHeader
+{
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 40;
+
+    transition:
+        background-color 300ms var(--ease),
+        box-shadow 300ms var(--ease);
+
+}
+
+.siteHeader.isStuck
+{
+
+    background-color: rgba(242, 229, 219, 0.93);
+
+    -webkit-backdrop-filter: blur(9px);
+
+    backdrop-filter: blur(9px);
+
+    box-shadow: 0 1px 0 rgba(157, 112, 100, 0.22);
+
+}
+
+.headerInner
+{
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 1.5rem;
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0.55rem var(--gutter);
+
+}
+
+.brandLockup
+{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.7rem;
+
+    text-decoration: none;
+
+}
+
+.brandLockupMark
+{
+
+    width: auto;
+
+    height: 6.5rem;
+
+    object-fit: contain;
+
+}
+
+.primaryNav
+{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: clamp(1rem, 2.2vw, 2.1rem);
+
+}
+
+.primaryNavList
+{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: clamp(0.9rem, 1.9vw, 1.85rem);
+
+}
+
+.primaryNavList a
+{
+
+    position: relative;
+
+    font-family: var(--fontDisplay);
+
+    font-size: 0.88rem;
+
+    color: var(--inkBody);
+
+    letter-spacing: 0.07em;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+}
+
+.primaryNavList a::after
+{
+
+    content: '';
+
+    position: absolute;
+
+    left: -0.1em;
+
+    right: -0.1em;
+
+    bottom: -0.55em;
+
+    height: 0.4em;
+
+    background-color: var(--rose);
+
+    -webkit-mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    -webkit-mask-size: 100% 100%;
+
+    mask-size: 100% 100%;
+
+    -webkit-mask-repeat: no-repeat;
+
+    mask-repeat: no-repeat;
+
+    opacity: 0;
+
+    transform: scaleX(0.3);
+
+    transform-origin: left center;
+
+    transition:
+        opacity 200ms var(--ease),
+        transform 320ms var(--ease);
+
+}
+
+.primaryNavList a:hover::after,
+.primaryNavList a:focus-visible::after,
+.primaryNavList a[aria-current='page']::after
+{
+
+    opacity: 1;
+
+    transform: scaleX(1);
+
+}
+
+.navAction
+{
+
+    padding: 0.62rem 1.15rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: 0.8rem;
+
+    color: var(--wallHigh);
+
+    letter-spacing: 0.11em;
+
+    text-transform: uppercase;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    background-color: var(--roseDeep);
+
+    border-radius: 1px;
+
+    transition: background-color 200ms var(--ease);
+
+}
+
+.navAction:hover,
+.navAction:focus-visible
+{
+
+    background-color: var(--roseInk);
+
+}
+
+.menuToggle
+{
+
+    display: none;
+
+    align-items: center;
+
+    gap: 0.55rem;
+
+    padding: 0.5rem 0.2rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: 0.78rem;
+
+    color: var(--inkDeep);
+
+    letter-spacing: 0.13em;
+
+    text-transform: uppercase;
+
+}
+
+.menuToggleBars
+{
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    width: 22px;
+
+}
+
+.menuToggleBars span
+{
+
+    display: block;
+
+    height: 1.5px;
+
+    background-color: var(--inkDeep);
+
+    transition: transform 260ms var(--ease), opacity 200ms var(--ease);
+
+}
+
+.menuToggle[aria-expanded='true'] .menuToggleBars span:nth-child(1)
+{
+
+    transform: translateY(5.5px) rotate(45deg);
+
+}
+
+.menuToggle[aria-expanded='true'] .menuToggleBars span:nth-child(2)
+{
+
+    opacity: 0;
+
+}
+
+.menuToggle[aria-expanded='true'] .menuToggleBars span:nth-child(3)
+{
+
+    transform: translateY(-5.5px) rotate(-45deg);
+
+}
+
+
+/* ============================================================
+   HERO — the wall
+============================================================ */
+
+.wallHero
+{
+
+    padding: clamp(1.5rem, 3vw, 2.6rem) 0 clamp(1.5rem, 2.6vw, 2.4rem);
+
+    overflow: hidden;
+
+}
+
+.wallHeroInner
+{
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.02fr);
+
+    align-items: center;
+
+    gap: clamp(1.5rem, 3vw, 3rem);
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.wallHeroWords
+{
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+/* The blush swash sits behind the headline, painted on the wall. */
+
+.wallHeroWords::before
+{
+
+    content: '';
+
+    position: absolute;
+
+    top: -1.5rem;
+
+    left: -14%;
+
+    width: 118%;
+
+    height: 13rem;
+
+    z-index: -1;
+
+    opacity: 0.72;
+
+    background-image: url('../images/decorative/heroPaintStroke.svg');
+
+    background-repeat: no-repeat;
+
+    background-size: 100% 100%;
+
+}
+
+.wallHeroHeading
+{
+
+    font-size: var(--stepDisplay);
+
+    margin-bottom: 1.35rem;
+
+}
+
+.wallHeroHeading .scriptLine
+{
+
+    margin-top: 0.14em;
+
+    margin-left: 0.06em;
+
+}
+
+.wallHeroLede
+{
+
+    max-width: 36ch;
+
+    margin-bottom: 1.6rem;
+
+    font-size: var(--stepSub);
+
+    line-height: 1.52;
+
+    color: var(--inkSoft);
+
+}
+
+.wallHeroActions
+{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.8rem;
+
+    margin-bottom: 2rem;
+
+}
+
+.wallHeroPlace
+{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.85rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--inkSoft);
+
+    letter-spacing: 0.2em;
+
+    text-transform: uppercase;
+
+}
+
+.placeRule
+{
+
+    display: block;
+
+    flex: 0 0 3.2rem;
+
+    height: 5px;
+
+    background-color: var(--sage);
+
+    -webkit-mask-image: url('../images/decorative/sageBrushStroke.svg');
+
+    mask-image: url('../images/decorative/sageBrushStroke.svg');
+
+    -webkit-mask-size: 100% 100%;
+
+    mask-size: 100% 100%;
+
+    -webkit-mask-repeat: no-repeat;
+
+    mask-repeat: no-repeat;
+
+}
+
+/* ── Objects on the rail ── */
+
+.wallHeroObjects
+{
+
+    position: relative;
+
+    min-height: clamp(23rem, 38vw, 33rem);
+
+}
+
+.plateRail
+{
+
+    position: absolute;
+
+    right: -24%;
+
+    bottom: 4.2rem;
+
+    left: -20%;
+
+    height: 9px;
+
+    background:
+        linear-gradient(180deg, var(--brassLight) 0%, var(--brass) 22%, var(--brassMid) 60%, var(--brassDark) 100%);
+
+    border-radius: 1px 1px 2px 2px;
+
+    box-shadow:
+        0 1px 0 rgba(255, 246, 226, 0.35) inset,
+        0 4px 9px rgba(var(--shadowInk), 0.24);
+
+}
+
+.heroObject
+{
+
+    position: absolute;
+
+    margin: 0;
+
+}
+
+.heroObject img
+{
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 1px;
+
+}
+
+/* Rung: propped — the big canvas leaning on the rail. */
+
+.heroObjectCanvas
+{
+
+    right: 6%;
+
+    bottom: 4.4rem;
+
+    width: 54%;
+
+    aspect-ratio: 3 / 4;
+
+    padding: 0.6rem 0.6rem 1.5rem;
+
+    background-color: var(--wallHigh);
+
+    box-shadow: var(--shadowProp);
+
+    transform: rotate(-1.1deg);
+
+}
+
+/* Rung: hung — the skillet on a nail, overlapping the canvas. */
+
+.heroObjectSkillet
+{
+
+    top: 1.5rem;
+
+    left: 4%;
+
+    width: 33%;
+
+    aspect-ratio: 3 / 4;
+
+    padding: 0.5rem 0.5rem 1.25rem;
+
+    background-color: var(--wallHigh);
+
+    box-shadow: var(--shadowHang);
+
+    transform: rotate(2.4deg);
+
+}
+
+.heroObjectSkillet::before
+{
+
+    content: '';
+
+    position: absolute;
+
+    top: -0.6rem;
+
+    left: 50%;
+
+    width: 9px;
+
+    height: 9px;
+
+    background:
+        radial-gradient(circle at 34% 30%, var(--brassLight) 0%, var(--brassMid) 55%, var(--brassDark) 100%);
+
+    border-radius: 50%;
+
+    box-shadow: 1px 2px 3px rgba(var(--shadowInk), 0.4);
+
+    transform: translateX(-50%);
+
+}
+
+/* Rung: on the ledge — the round resting on the rail, cropped
+   by the viewport edge so the wall runs past the frame. */
+
+.heroObjectRound
+{
+
+    bottom: 4.4rem;
+
+    left: -7%;
+
+    width: 30%;
+
+    aspect-ratio: 600 / 767;
+
+    padding: 0.45rem 0.45rem 1.1rem;
+
+    background-color: var(--wallHigh);
+
+    box-shadow: var(--shadowLedge);
+
+    transform: rotate(-3.2deg);
+
+}
+
+
+/* ============================================================
+   SURFACES — what the paint goes on
+============================================================ */
+
+.surfacesSection
+{
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: var(--sectionPad) var(--gutter) clamp(3rem, 6vw, 5rem);
+
+}
+
+.surfacesHead
+{
+
+    margin-bottom: clamp(1.8rem, 3.2vw, 2.8rem);
+
+}
+
+/* Objects standing on a shelf at unequal heights — never a grid
+   of equal cards. */
+
+.surfaceShelf
+{
+
+    display: grid;
+
+    grid-template-columns: repeat(12, 1fr);
+
+    align-items: end;
+
+    gap: clamp(0.9rem, 1.9vw, 1.9rem);
+
+    border-bottom: 3px solid rgba(var(--ruleInk), 0.4);
+
+}
+
+.surfaceItem
+{
+
+    grid-column: span 2;
+
+}
+
+.surfaceItem:nth-child(2),
+.surfaceItem:nth-child(5)
+{
+
+    grid-column: span 3;
+
+}
+
+.surfaceFigure
+{
+
+    margin: 0;
+
+    padding: 0.45rem 0.45rem 0;
+
+    background-color: var(--wallHigh);
+
+    border-radius: 1px;
+
+    box-shadow: var(--shadowLedge);
+
+}
+
+.surfaceFigure img
+{
+
+    width: 100%;
+
+    border-radius: 1px;
+
+}
+
+.surfaceItem:nth-child(1) .surfaceFigure
+{
+
+    transform: rotate(-1.4deg);
+
+}
+
+.surfaceItem:nth-child(2) .surfaceFigure
+{
+
+    transform: rotate(0.9deg);
+
+}
+
+.surfaceItem:nth-child(3) .surfaceFigure
+{
+
+    transform: rotate(-0.7deg);
+
+}
+
+.surfaceItem:nth-child(4) .surfaceFigure
+{
+
+    transform: rotate(1.5deg);
+
+}
+
+.surfaceItem:nth-child(5) .surfaceFigure
+{
+
+    transform: rotate(-1.1deg);
+
+}
+
+.surfaceFigure figcaption
+{
+
+    display: block;
+
+    padding: 0.75rem 0.35rem 0.85rem;
+
+}
+
+.surfaceName
+{
+
+    display: block;
+
+    font-family: var(--fontDisplay);
+
+    font-size: 1.02rem;
+
+    color: var(--inkDeep);
+
+    letter-spacing: 0.03em;
+
+}
+
+.surfaceNote
+{
+
+    display: block;
+
+    padding-top: 0.2rem;
+
+    font-size: 0.87rem;
+
+    line-height: 1.45;
+
+    color: var(--inkSoft);
+
+}
+
+.surfacesFoot
+{
+
+    max-width: 48ch;
+
+    margin-top: 1.6rem;
+
+    font-size: var(--stepSub);
+
+    color: var(--inkSoft);
+
+}
+
+
+/* ============================================================
+   COLLECTION — pieces along the long rails
+============================================================ */
+
+.collectionSection
+{
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: clamp(3rem, 6vw, 5rem) var(--gutter) var(--sectionPad);
+
+}
+
+.collectionHead
+{
+
+    margin-bottom: clamp(1.8rem, 3.2vw, 2.8rem);
+
+}
+
+.collectionWall
+{
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: clamp(2.4rem, 4vw, 3.6rem);
+
+}
+
+.collectionRail
+{
+
+    display: grid;
+
+    align-items: end;
+
+    gap: clamp(1.1rem, 2.4vw, 2.4rem);
+
+    border-bottom: 3px solid rgba(var(--ruleInk), 0.4);
+
+}
+
+.collectionRailOne
+{
+
+    grid-template-columns: 1.16fr 0.86fr 0.98fr;
+
+}
+
+.collectionRailTwo
+{
+
+    grid-template-columns: 0.94fr 1.18fr 0.88fr;
+
+}
+
+.pieceCard
+{
+
+    position: relative;
+
+}
+
+.pieceLift
+{
+
+    display: block;
+
+    width: 100%;
+
+    padding: 0;
+
+    text-align: left;
+
+}
+
+.pieceFrame
+{
+
+    display: block;
+
+    padding: 0.5rem 0.5rem 0;
+
+    background-color: var(--wallHigh);
+
+    border-radius: 1px;
+
+    box-shadow: var(--shadowProp);
+
+    transition:
+        transform 380ms var(--ease),
+        box-shadow 380ms var(--ease);
+
+}
+
+.pieceFrame img
+{
+
+    width: 100%;
+
+    aspect-ratio: 4 / 5;
+
+    object-fit: cover;
+
+    border-radius: 1px;
+
+}
+
+.pieceCardSmall .pieceFrame img
+{
+
+    aspect-ratio: 1 / 1;
+
+}
+
+.pieceCardLarge .pieceFrame img
+{
+
+    aspect-ratio: 5 / 6;
+
+}
+
+.pieceCard:nth-child(1) .pieceFrame
+{
+
+    transform: rotate(-1.2deg);
+
+}
+
+.pieceCard:nth-child(2) .pieceFrame
+{
+
+    transform: rotate(1.6deg);
+
+}
+
+.pieceCard:nth-child(3) .pieceFrame
+{
+
+    transform: rotate(-0.8deg);
+
+}
+
+.pieceLift:hover .pieceFrame,
+.pieceLift:focus-visible .pieceFrame
+{
+
+    box-shadow: var(--shadowLift);
+
+    transform: rotate(0deg) translateY(-10px);
+
+}
+
+/* The ticket: what it is painted on, and what is on it. */
+
+.pieceTicket
+{
+
+    display: block;
+
+    padding: 0.75rem 0.3rem 0.85rem;
+
+}
+
+.pieceTicketSubject
+{
+
+    display: block;
+
+    font-family: var(--fontDisplay);
+
+    font-size: 1.1rem;
+
+    line-height: 1.28;
+
+    color: var(--inkDeep);
+
+}
+
+.pieceTicketSurface
+{
+
+    display: block;
+
+    padding-top: 0.34rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    font-style: italic;
+
+    color: var(--roseInk);
+
+    letter-spacing: 0.13em;
+
+}
+
+
+/* ============================================================
+   ABOUT — the wall repainted deep sage
+============================================================ */
+
+.aboutSection
+{
+
+    position: relative;
+
+    padding: var(--sectionPad) 0;
+
+    overflow: hidden;
+
+    color: var(--inkOnDark);
+
+    background-color: var(--wallSage);
+
+    background-image:
+        radial-gradient(90% 70% at 12% -8%, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0) 60%),
+        radial-gradient(90% 80% at 104% 110%, rgba(0, 0, 0, 0.24) 0%, rgba(0, 0, 0, 0) 62%);
+
+}
+
+/* A botanical sprig painted straight onto the sage wall. The
+   cottage drawing itself hangs in .aboutFigure, mounted. */
+
+.aboutMural
+{
+
+    position: absolute;
+
+    right: 3%;
+
+    bottom: -6%;
+
+    width: clamp(11rem, 20vw, 17rem);
+
+    opacity: 0.34;
+
+    mix-blend-mode: screen;
+
+    pointer-events: none;
+
+    filter: brightness(0) invert(1) opacity(0.55);
+
+}
+
+.aboutInner
+{
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+
+    align-items: center;
+
+    gap: clamp(2rem, 5vw, 4.5rem);
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.aboutFigure
+{
+
+    margin: 0;
+
+    padding: 0.7rem 0.7rem 0;
+
+    background-color: var(--wallHigh);
+
+    border-radius: 1px;
+
+    box-shadow: var(--shadowLedgeDark);
+
+    transform: rotate(-1.6deg);
+
+}
+
+.aboutFigure img
+{
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    object-fit: cover;
+
+    object-position: 50% 42%;
+
+}
+
+.aboutFigure figcaption
+{
+
+    padding: 0.7rem 0 0.85rem;
+
+    font-family: var(--fontScript);
+
+    font-size: 1.3rem;
+
+    line-height: 1;
+
+    color: var(--roseInk);
+
+    text-align: center;
+
+}
+
+.aboutHeading
+{
+
+    color: var(--inkOnDark);
+
+}
+
+.aboutHeading .scriptLine
+{
+
+    color: var(--blush);
+
+}
+
+.aboutWords p
+{
+
+    max-width: 58ch;
+
+    margin-bottom: 1.15rem;
+
+    color: var(--inkSoftOnSage);
+
+}
+
+.aboutLead
+{
+
+    font-size: var(--stepSub);
+
+    line-height: 1.55;
+
+    color: var(--inkOnDark) !important;
+
+}
+
+.aboutSignature
+{
+
+    margin: 1.6rem 0 2rem !important;
+
+    font-family: var(--fontScript);
+
+    font-size: 1.7rem;
+
+    line-height: 1.1;
+
+    color: var(--blush) !important;
+
+}
+
+
+/* ============================================================
+   PROCESS — the wall repainted deep clay; an ordered bench
+============================================================ */
+
+.processSection
+{
+
+    padding: var(--sectionPad) 0;
+
+    color: var(--inkOnDark);
+
+    background-color: var(--wallClay);
+
+    background-image:
+        radial-gradient(90% 70% at 10% -10%, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0) 58%),
+        radial-gradient(90% 80% at 102% 112%, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0) 60%);
+
+}
+
+.processInner
+{
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr);
+
+    gap: clamp(1.8rem, 3.4vw, 2.8rem);
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.processHead
+{
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+
+    align-items: end;
+
+    gap: clamp(1rem, 3vw, 3.5rem);
+
+}
+
+.processHeading
+{
+
+    color: var(--inkOnDark);
+
+}
+
+.processHeading .scriptLine
+{
+
+    color: var(--blushPale);
+
+}
+
+.processLede
+{
+
+    color: var(--inkSoftOnClay);
+
+}
+
+.processBench
+{
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 0;
+
+}
+
+.processStation
+{
+
+    display: grid;
+
+    grid-template-columns: auto minmax(0, 1fr);
+
+    column-gap: 1.05rem;
+
+    padding: 1.5rem 1.6rem 1.6rem 0;
+
+    border-top: 1px solid rgba(247, 237, 228, 0.3);
+
+}
+
+.processStation:nth-child(odd)
+{
+
+    border-right: 1px solid rgba(247, 237, 228, 0.3);
+
+}
+
+.processStationIndex
+{
+
+    grid-row: 1 / 3;
+
+    padding-top: 0.42rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: 0.86rem;
+
+    color: var(--blushPale);
+
+    letter-spacing: 0.16em;
+
+}
+
+.processStationName
+{
+
+    position: relative;
+
+    font-family: var(--fontDisplay);
+
+    font-size: clamp(1.3rem, 2.1vw, 1.72rem);
+
+    font-weight: 400;
+
+    line-height: 1.15;
+
+    color: var(--inkOnDark);
+
+}
+
+.processStationName::after
+{
+
+    content: '';
+
+    position: absolute;
+
+    left: -0.06em;
+
+    bottom: -0.32em;
+
+    width: 2.1rem;
+
+    height: 0.3em;
+
+    background-color: var(--blushPale);
+
+    -webkit-mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    -webkit-mask-size: 100% 100%;
+
+    mask-size: 100% 100%;
+
+    -webkit-mask-repeat: no-repeat;
+
+    mask-repeat: no-repeat;
+
+    opacity: 0.85;
+
+}
+
+.processStationBody
+{
+
+    max-width: 40ch;
+
+    padding-top: 1.05rem;
+
+    font-size: 0.99rem;
+
+    line-height: 1.6;
+
+    color: var(--inkSoftOnClay);
+
+}
+
+.processAction
+{
+
+    justify-self: start;
+
+    margin-top: clamp(1.8rem, 3vw, 2.6rem);
+
+}
+
+
+/* ============================================================
+   MARKETS
+============================================================ */
+
+.marketsSection
+{
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: var(--sectionPad) var(--gutter) clamp(2.75rem, 4.6vw, 4.5rem);
+
+}
+
+.marketsInner
+{
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+
+    align-items: center;
+
+    gap: clamp(2rem, 4.5vw, 4rem);
+
+}
+
+.marketTowns
+{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.6rem 2.4rem;
+
+    margin: 2rem 0 1.5rem;
+
+    padding: 1.4rem 0;
+
+    border-top: 1px solid rgba(157, 112, 100, 0.32);
+
+    border-bottom: 1px solid rgba(157, 112, 100, 0.32);
+
+}
+
+.marketTowns li
+{
+
+    font-family: var(--fontDisplay);
+
+    font-size: 1.3rem;
+
+    line-height: 1.15;
+
+    color: var(--inkDeep);
+
+}
+
+.marketTowns li span
+{
+
+    display: block;
+
+    padding-top: 0.22rem;
+
+    font-size: var(--stepLabel);
+
+    color: var(--inkSoft);
+
+    letter-spacing: 0.19em;
+
+    text-transform: uppercase;
+
+}
+
+.marketsNote
+{
+
+    max-width: 46ch;
+
+    margin-top: 0.2rem;
+
+    color: var(--inkSoft);
+
+}
+
+.marketsFigure
+{
+
+    margin: 0;
+
+    padding: 0.7rem;
+
+    background-color: var(--wallHigh);
+
+    border-radius: 1px;
+
+    box-shadow: var(--shadowProp);
+
+    transform: rotate(1.1deg);
+
+}
+
+.marketsFigure img
+{
+
+    width: 100%;
+
+    aspect-ratio: 4 / 5;
+
+    object-fit: cover;
+
+    object-position: 50% 46%;
+
+}
+
+
+/* ============================================================
+   COMMISSION
+============================================================ */
+
+.commissionSection
+{
+
+    padding: 0 0 var(--sectionPad);
+
+}
+
+.commissionInner
+{
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+
+    gap: clamp(2.2rem, 5vw, 4.5rem);
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.commissionWords
+{
+
+    position: relative;
+
+}
+
+.commissionDirect
+{
+
+    margin-top: 1.6rem;
+
+    color: var(--inkSoft);
+
+}
+
+.commissionSprig
+{
+
+    width: clamp(8rem, 16vw, 14rem);
+
+    margin-top: clamp(1.8rem, 4vw, 3.2rem);
+
+    margin-left: -1rem;
+
+    opacity: 0.55;
+
+}
+
+.commissionForm
+{
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1.1rem;
+
+    padding: clamp(1.6rem, 3vw, 2.6rem);
+
+    background-color: rgba(251, 243, 236, 0.72);
+
+    border: 1px solid rgba(157, 112, 100, 0.24);
+
+    border-radius: 2px;
+
+    box-shadow: var(--shadowLedge);
+
+}
+
+.formRow
+{
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 1.1rem;
+
+}
+
+.formField
+{
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 0.45rem;
+
+}
+
+.formField::after
+{
+
+    content: '';
+
+    position: absolute;
+
+    right: 0.2rem;
+
+    bottom: -0.3rem;
+
+    left: 0.2rem;
+
+    height: 0.4rem;
+
+    background-color: var(--roseDeep);
+
+    -webkit-mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    -webkit-mask-size: 100% 100%;
+
+    mask-size: 100% 100%;
+
+    -webkit-mask-repeat: no-repeat;
+
+    mask-repeat: no-repeat;
+
+    opacity: 0;
+
+    transform: scaleX(0.3);
+
+    transform-origin: left center;
+
+    transition:
+        opacity 200ms var(--ease),
+        transform 320ms var(--ease);
+
+    pointer-events: none;
+
+}
+
+.formField:focus-within::after
+{
+
+    opacity: 1;
+
+    transform: scaleX(1);
+
+}
+
+.formLabel
+{
+
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 0.5rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--inkBody);
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+
+}
+
+.formOptional
+{
+
+    font-size: 0.66rem;
+
+    color: var(--inkSoft);
+
+    letter-spacing: 0.1em;
+
+    text-transform: none;
+
+    font-style: italic;
+
+}
+
+.formInput
+{
+
+    width: 100%;
+
+    padding: 0.78rem 0.9rem;
+
+    font-family: var(--fontBody);
+
+    font-size: 1rem;
+
+    color: var(--inkDeep);
+
+    background-color: var(--wallHigh);
+
+    border: 1px solid rgba(157, 112, 100, 0.42);
+
+    border-radius: 1px;
+
+    caret-color: var(--roseDeep);
+
+    transition:
+        border-color 200ms var(--ease),
+        box-shadow 200ms var(--ease);
+
+}
+
+.formInput:hover
+{
+
+    border-color: rgba(157, 112, 100, 0.68);
+
+}
+
+.formInput:focus
+{
+
+    outline: none;
+
+    border-color: var(--roseDeep);
+
+    box-shadow: 0 0 0 3px rgba(184, 125, 118, 0.22);
+
+}
+
+.formInput::placeholder
+{
+
+    color: var(--inkSoft);
+
+}
+
+.formSelect
+{
+
+    appearance: none;
+
+    padding-right: 2.4rem;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238d463f' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+
+    background-repeat: no-repeat;
+
+    background-position: right 0.95rem center;
+
+    background-size: 12px 8px;
+
+}
+
+.formTextarea
+{
+
+    resize: vertical;
+
+    min-height: 8rem;
+
+    line-height: 1.6;
+
+}
+
+.formField.hasError .formInput
+{
+
+    border-color: #9c3b32;
+
+    background-color: #fdf1ee;
+
+}
+
+.formError
+{
+
+    font-size: 0.85rem;
+
+    line-height: 1.4;
+
+    color: #8a3128;
+
+}
+
+.formError:empty
+{
+
+    display: none;
+
+}
+
+.commissionSubmit
+{
+
+    align-self: start;
+
+    margin-top: 0.6rem;
+
+}
+
+.commissionInner
+{
+
+    align-items: start;
+
+}
+
+.formStatus
+{
+
+    font-size: 0.95rem;
+
+    line-height: 1.5;
+
+    color: var(--inkBody);
+
+}
+
+.formStatus:empty
+{
+
+    display: none;
+
+}
+
+.formStatus.isSent
+{
+
+    padding: 0.9rem 1.05rem;
+
+    color: var(--wallSageDeep);
+
+    background-color: rgba(163, 164, 143, 0.24);
+
+    border-left: 1px solid var(--sage);
+
+}
+
+.formNoscript
+{
+
+    font-size: 0.95rem;
+
+    color: var(--inkBody);
+
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.siteFooter
+{
+
+    padding: clamp(3rem, 6vw, 5rem) 0 2rem;
+
+    color: var(--inkOnDark);
+
+    background-color: var(--wallSageDeep);
+
+}
+
+.footerInner
+{
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.6fr) minmax(0, 0.7fr);
+
+    gap: clamp(2rem, 4vw, 3.5rem);
+
+    align-items: start;
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter) clamp(2.5rem, 4vw, 3.5rem);
+
+}
+
+.footerMark
+{
+
+    width: 8.5rem;
+
+    height: 8.5rem;
+
+    object-fit: contain;
+
+    background-color: var(--wallHigh);
+
+    border-radius: 50%;
+
+    box-shadow: var(--shadowLedgeDark);
+
+}
+
+.footerTagline
+{
+
+    padding-top: 1rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--blush);
+
+    letter-spacing: 0.24em;
+
+    text-transform: uppercase;
+
+}
+
+.footerNav
+{
+
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+
+}
+
+.footerNavHeading
+{
+
+    margin-bottom: 1rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    font-weight: 400;
+
+    color: var(--blush);
+
+    letter-spacing: 0.2em;
+
+    text-transform: uppercase;
+
+}
+
+.footerNavGroup li
+{
+
+    margin-bottom: 0.55rem;
+
+    font-size: 0.95rem;
+
+    color: var(--inkSoftOnSage);
+
+}
+
+.footerNavGroup a
+{
+
+    color: var(--inkSoftOnSage);
+
+    text-decoration: none;
+
+    text-underline-offset: 0.25em;
+
+    transition: color 180ms var(--ease);
+
+}
+
+.footerNavGroup a:hover,
+.footerNavGroup a:focus-visible
+{
+
+    color: var(--inkOnDark);
+
+    text-decoration: underline;
+
+    text-decoration-color: var(--rose);
+
+}
+
+.footerPlain
+{
+
+    color: var(--inkSoftOnSage);
+
+}
+
+.footerScript
+{
+
+    font-family: var(--fontScript);
+
+    font-size: var(--stepSubhead);
+
+    line-height: 1.15;
+
+    color: var(--blush);
+
+    text-align: right;
+
+}
+
+.footerLegal
+{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: baseline;
+
+    justify-content: space-between;
+
+    gap: 0.5rem 2rem;
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 1.5rem var(--gutter) 0;
+
+    border-top: 1px solid rgba(247, 237, 228, 0.16);
+
+}
+
+.footerCopyright,
+.footerDevCredit
+{
+
+    font-size: 0.82rem;
+
+    line-height: 1.5;
+
+    color: var(--sageFaint);
+
+}
+
+.footerDevCredit
+{
+
+    margin-left: auto;
+
+    text-align: right;
+
+}
+
+.devCreditName
+{
+
+    color: var(--blush);
+
+    letter-spacing: 0.03em;
+
+}
+
+.footerDevCredit a
+{
+
+    color: var(--blush);
+
+    text-decoration: underline;
+
+    text-decoration-color: rgba(232, 191, 181, 0.5);
+
+    text-underline-offset: 0.25em;
+
+    transition: text-decoration-color 180ms var(--ease);
+
+}
+
+.footerDevCredit a:hover,
+.footerDevCredit a:focus-visible
+{
+
+    text-decoration-color: var(--blush);
+
+}
+
+
+/* ============================================================
+   PIECE VIEWER — lifted off the wall
+============================================================ */
+
+.pieceViewer
+{
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 80;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: var(--gutter);
+
+}
+
+.pieceViewer[hidden]
+{
+
+    display: none;
+
+}
+
+.pieceViewerScrim
+{
+
+    position: absolute;
+
+    inset: 0;
+
+    background-color: rgba(52, 36, 30, 0.62);
+
+    -webkit-backdrop-filter: blur(6px);
+
+    backdrop-filter: blur(6px);
+
+    opacity: 0;
+
+    transition: opacity 320ms var(--ease);
+
+}
+
+.pieceViewer.isOpen .pieceViewerScrim
+{
+
+    opacity: 1;
+
+}
+
+.pieceViewerPanel
+{
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+    align-items: center;
+
+    gap: clamp(1.5rem, 3vw, 3rem);
+
+    width: min(58rem, 100%);
+
+    max-height: 100%;
+
+    padding: clamp(1.2rem, 2.4vw, 2.2rem);
+
+    overflow-y: auto;
+
+    background-color: var(--wallBase);
+
+    background-image: var(--grain);
+
+    background-size: 180px 180px;
+
+    border-radius: 2px;
+
+    box-shadow: var(--shadowLift);
+
+    opacity: 0;
+
+    transform: translateY(18px) scale(0.985);
+
+    transition:
+        opacity 340ms var(--ease),
+        transform 420ms var(--ease);
+
+}
+
+.pieceViewer.isOpen .pieceViewerPanel
+{
+
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+
+}
+
+.pieceViewerFigure
+{
+
+    margin: 0;
+
+    padding: 0.6rem;
+
+    background-color: var(--wallHigh);
+
+    border-radius: 1px;
+
+    box-shadow: var(--shadowProp);
+
+}
+
+.pieceViewerFigure img
+{
+
+    width: 100%;
+
+    max-height: 62vh;
+
+    object-fit: contain;
+
+}
+
+.pieceViewerSubject
+{
+
+    font-size: var(--stepSubhead);
+
+}
+
+.pieceViewerSurface
+{
+
+    margin: 0.55rem 0 1rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: 0.94rem;
+
+    font-style: italic;
+
+    color: var(--roseInk);
+
+    letter-spacing: 0.06em;
+
+}
+
+.pieceViewerNote
+{
+
+    margin-bottom: 1.8rem;
+
+    color: var(--inkSoft);
+
+}
+
+.pieceViewerClose
+{
+
+    position: absolute;
+
+    top: 0.9rem;
+
+    right: 0.9rem;
+
+    z-index: 2;
+
+    display: grid;
+
+    place-items: center;
+
+    width: 2.6rem;
+
+    height: 2.6rem;
+
+    color: var(--inkDeep);
+
+    background-color: rgba(251, 243, 236, 0.9);
+
+    border-radius: 50%;
+
+    box-shadow: var(--shadowLedge);
+
+    transition: background-color 180ms var(--ease);
+
+}
+
+.pieceViewerClose:hover,
+.pieceViewerClose:focus-visible
+{
+
+    background-color: var(--blushPale);
+
+}
+
+.pieceViewerClose svg
+{
+
+    width: 1.05rem;
+
+    height: 1.05rem;
+
+    stroke: currentColor;
+
+    stroke-width: 1.5;
+
+    stroke-linecap: round;
+
+    fill: none;
+
+}
+
+body.isViewerOpen
+{
+
+    overflow: hidden;
+
+}
+
+
+/* ============================================================
+   MEDIA QUERIES — tablet
+============================================================ */
+
+@media (max-width: 1024px)
+{
+
+    .brandLockupMark
+    {
+
+        height: 5.5rem;
+
+    }
+
+    .primaryNavList
+    {
+
+        gap: 1rem;
+
+    }
+
+    .primaryNavList a
+    {
+
+        font-size: 0.82rem;
+
+    }
+
+    .wallHeroInner
+    {
+
+        grid-template-columns: minmax(0, 1fr);
+
+        gap: clamp(2rem, 5vw, 3rem);
+
+    }
+
+    /* Tablet recomposes the hero rather than stacking it: the
+       headline holds the left column with the place mark beneath
+       it, and the lede and actions stack down the right. */
+
+    .wallHeroWords
+    {
+
+        display: grid;
+
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+
+        align-items: end;
+
+        column-gap: clamp(1.5rem, 4vw, 3rem);
+
+        max-width: none;
+
+    }
+
+    .wallHeroHeading
+    {
+
+        grid-column: 1;
+
+        grid-row: 1;
+
+        align-self: start;
+
+        margin-bottom: 0;
+
+    }
+
+    .wallHeroLede
+    {
+
+        grid-column: 2;
+
+        grid-row: 1;
+
+        align-self: end;
+
+        max-width: none;
+
+    }
+
+    .wallHeroActions
+    {
+
+        grid-column: 2;
+
+        grid-row: 2;
+
+        margin-bottom: 0;
+
+    }
+
+    .wallHeroPlace
+    {
+
+        grid-column: 1;
+
+        grid-row: 2;
+
+        align-self: start;
+
+        margin-top: 1.4rem;
+
+    }
+
+    .wallHeroObjects
+    {
+
+        min-height: 30rem;
+
+    }
+
+    .heroObjectCanvas
+    {
+
+        right: 4%;
+
+        width: 46%;
+
+    }
+
+    .heroObjectSkillet
+    {
+
+        top: 0.5rem;
+
+        left: 26%;
+
+        width: 25%;
+
+    }
+
+    .heroObjectRound
+    {
+
+        left: -3%;
+
+        width: 25%;
+
+    }
+
+    .sectionHead,
+    .processHead
+    {
+
+        grid-template-columns: minmax(0, 1fr);
+
+        gap: 0.9rem;
+
+    }
+
+    .sectionLede
+    {
+
+        max-width: 58ch;
+
+    }
+
+    .surfaceShelf
+    {
+
+        grid-template-columns: repeat(6, 1fr);
+
+        row-gap: 2.2rem;
+
+    }
+
+    .surfaceItem,
+    .surfaceItem:nth-child(2),
+    .surfaceItem:nth-child(5)
+    {
+
+        grid-column: span 2;
+
+    }
+
+    .surfaceItem:nth-child(4),
+    .surfaceItem:nth-child(5)
+    {
+
+        grid-column: span 3;
+
+    }
+
+    .processStation
+    {
+
+        padding-right: 1.1rem;
+
+    }
+
+    .processStationBody
+    {
+
+        max-width: none;
+
+    }
+
+    .aboutInner,
+    .processInner,
+    .marketsInner,
+    .commissionInner
+    {
+
+        grid-template-columns: minmax(0, 1fr);
+
+    }
+
+    .aboutFigure
+    {
+
+        max-width: 22rem;
+
+    }
+
+    .footerInner
+    {
+
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+
+    }
+
+    .footerScript
+    {
+
+        grid-column: 1 / -1;
+
+        text-align: left;
+
+    }
+
+}
+
+
+/* ============================================================
+   MEDIA QUERIES — mobile navigation
+============================================================ */
+
+@media (max-width: 880px)
+{
+
+    .menuToggle
+    {
+
+        display: flex;
+
+    }
+
+    .siteHeader
+    {
+
+        background-color: rgba(241, 226, 211, 0.94);
+
+        -webkit-backdrop-filter: blur(9px);
+
+        backdrop-filter: blur(9px);
+
+    }
+
+    .primaryNav
+    {
+
+        position: fixed;
+
+        top: 0;
+
+        right: 0;
+
+        bottom: 0;
+
+        z-index: 50;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        justify-content: center;
+
+        gap: 2rem;
+
+        width: min(21rem, 86vw);
+
+        padding: 2rem;
+
+        overflow-y: auto;
+
+        background-color: var(--wallBase);
+
+        background-image: var(--grain);
+
+        background-size: 180px 180px;
+
+        box-shadow: -18px 0 50px rgba(var(--shadowInk), 0.28);
+
+        transform: translateX(100%);
+
+        visibility: hidden;
+
+        pointer-events: none;
+
+        transition:
+            transform 380ms var(--ease),
+            visibility 380ms var(--ease);
+
+    }
+
+    .primaryNav.isOpen
+    {
+
+        transform: translateX(0);
+
+        visibility: visible;
+
+        pointer-events: auto;
+
+    }
+
+    .primaryNavList
+    {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 1.35rem;
+
+        width: 100%;
+
+    }
+
+    .primaryNavList li
+    {
+
+        width: 100%;
+
+    }
+
+    .primaryNavList a
+    {
+
+        font-size: 1.32rem;
+
+        letter-spacing: 0.02em;
+
+    }
+
+    .navAction
+    {
+
+        font-size: 0.86rem;
+
+    }
+
+}
+
+
+/* ============================================================
+   MEDIA QUERIES — mobile
+============================================================ */
+
+@media (max-width: 720px)
+{
+
+    :root
+    {
+
+        --sectionPad: clamp(3.5rem, 12vw, 5rem);
+
+    }
+
+    .brandLockupMark
+    {
+
+        height: 4.5rem;
+
+    }
+
+    /* Mobile is composed, not stacked: the canvas leans against
+       the right edge and runs off it, the skillet hangs across
+       its top-left corner, and the round rests on the rail at
+       the far left. The wall keeps running past the frame. */
+
+    .wallHero
+    {
+
+        padding-top: 1rem;
+
+    }
+
+    .wallHeroWords
+    {
+
+        display: block;
+
+        max-width: none;
+
+    }
+
+    .wallHeroHeading
+    {
+
+        margin-bottom: 1.2rem;
+
+    }
+
+    .wallHeroLede,
+    .wallHeroActions,
+    .wallHeroPlace
+    {
+
+        grid-column: auto;
+
+        grid-row: auto;
+
+    }
+
+    .wallHeroWords::before
+    {
+
+        left: -18%;
+
+        width: 132%;
+
+        height: 10rem;
+
+    }
+
+    .wallHeroLede
+    {
+
+        max-width: 30ch;
+
+        margin-bottom: 1.6rem;
+
+    }
+
+    .wallHeroActions
+    {
+
+        margin-bottom: 1.9rem;
+
+    }
+
+    .wallHeroActions .buttonPainted,
+    .wallHeroActions .buttonLined
+    {
+
+        flex: 1 1 auto;
+
+        padding-inline: 1.1rem;
+
+        font-size: 0.82rem;
+
+    }
+
+    .wallHeroObjects
+    {
+
+        min-height: 21rem;
+
+        margin-top: 1rem;
+
+    }
+
+    .plateRail
+    {
+
+        right: -8%;
+
+        bottom: 2.2rem;
+
+        left: -8%;
+
+    }
+
+    .heroObjectCanvas
+    {
+
+        right: -6%;
+
+        bottom: 2.4rem;
+
+        width: 56%;
+
+    }
+
+    .heroObjectSkillet
+    {
+
+        top: 0;
+
+        left: 8%;
+
+        width: 34%;
+
+    }
+
+    .heroObjectRound
+    {
+
+        bottom: 2.4rem;
+
+        left: -10%;
+
+        width: 32%;
+
+    }
+
+
+    .surfaceShelf
+    {
+
+        grid-template-columns: repeat(4, 1fr);
+
+        gap: 1rem;
+
+        row-gap: 1.9rem;
+
+    }
+
+    .surfaceItem,
+    .surfaceItem:nth-child(2),
+    .surfaceItem:nth-child(5)
+    {
+
+        grid-column: span 2;
+
+    }
+
+    .surfaceItem:nth-child(5)
+    {
+
+        grid-column: span 4;
+
+    }
+
+    .surfaceItem:nth-child(5) .surfaceFigure img
+    {
+
+        aspect-ratio: 21 / 9;
+
+        object-fit: cover;
+
+    }
+
+    /* Rails become staggered pairs so the wall keeps its
+       irregular rhythm on a narrow screen. */
+
+    .collectionRailOne,
+    .collectionRailTwo
+    {
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 1rem;
+
+        row-gap: 2.2rem;
+
+    }
+
+    .collectionRailOne .pieceCard:nth-child(1),
+    .collectionRailTwo .pieceCard:nth-child(2)
+    {
+
+        grid-column: span 2;
+
+    }
+
+    .collectionRailOne .pieceCard:nth-child(1) .pieceFrame img,
+    .collectionRailTwo .pieceCard:nth-child(2) .pieceFrame img
+    {
+
+        aspect-ratio: 5 / 4;
+
+    }
+
+    .aboutMural
+    {
+
+        right: -18%;
+
+        bottom: -4%;
+
+        width: 24rem;
+
+        opacity: 0.12;
+
+    }
+
+    .processStationBody p,
+    .processStationBody .buttonPainted
+    {
+
+        padding-left: 0;
+
+        margin-left: 0;
+
+    }
+
+    .processStationBody p
+    {
+
+        padding-bottom: 1.1rem;
+
+    }
+
+    .marketTowns
+    {
+
+        gap: 1.1rem 2rem;
+
+    }
+
+    .formRow
+    {
+
+        grid-template-columns: minmax(0, 1fr);
+
+    }
+
+    .commissionForm
+    {
+
+        padding: 1.3rem;
+
+    }
+
+    .commissionSubmit
+    {
+
+        align-self: stretch;
+
+    }
+
+    .pieceViewerPanel
+    {
+
+        grid-template-columns: minmax(0, 1fr);
+
+        align-content: start;
+
+        gap: 1.2rem;
+
+    }
+
+    .pieceViewerFigure img
+    {
+
+        max-height: 44vh;
+
+    }
+
+    .footerInner
+    {
+
+        grid-template-columns: minmax(0, 1fr);
+
+        text-align: left;
+
+    }
+
+    .footerNav
+    {
+
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+    }
+
+    .footerNavGroup:last-child
+    {
+
+        grid-column: span 2;
+
+    }
+
+    .footerMark
+    {
+
+        width: 6.5rem;
+
+        height: 6.5rem;
+
+    }
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce)
+{
+
+    html
+    {
+
+        scroll-behavior: auto;
+
+    }
+
+    *,
+    *::before,
+    *::after
+    {
+
+        animation-duration: 0.001ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.001ms !important;
+
+    }
+
+    .linkPainted::after,
+    .primaryNavList a[aria-current='page']::after
+    {
+
+        transform: scaleX(1);
+
+    }
+
+}
+
+
+/* ============================================================
+   UTILITY
+============================================================ */
+
+.visuallyHidden
+{
+
+    position: absolute;
+
+    width: 1px;
+
+    height: 1px;
+
+    margin: -1px;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    clip-path: inset(50%);
+
+    white-space: nowrap;
+
+    border: 0;
+
+}
+
+
+/* ============================================================
+   SERVICE MARQUEE — the painted band, as crawlable text
+============================================================ */
+
+.serviceMarquee
+{
+
+    position: relative;
+
+    padding: clamp(1.5rem, 2.6vw, 2.3rem) 0;
+
+    overflow: hidden;
+
+}
+
+.serviceMarquee::before
+{
+
+    content: '';
+
+    position: absolute;
+
+    inset: 0 -2%;
+
+    background-color: var(--wallSage);
+
+    -webkit-mask-image: url('../images/decorative/sageBrushStroke.svg');
+
+    mask-image: url('../images/decorative/sageBrushStroke.svg');
+
+    -webkit-mask-size: 100% 100%;
+
+    mask-size: 100% 100%;
+
+    -webkit-mask-repeat: no-repeat;
+
+    mask-repeat: no-repeat;
+
+}
+
+.marqueeViewport
+{
+
+    position: relative;
+
+    display: flex;
+
+    width: max-content;
+
+    animation: marqueeDrift 68s linear infinite;
+
+}
+
+.marqueeViewport.isPaused
+{
+
+    animation-play-state: paused;
+
+}
+
+.marqueeTrack
+{
+
+    display: flex;
+
+    align-items: center;
+
+    flex: 0 0 auto;
+
+}
+
+.marqueeTrack li
+{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: clamp(1.4rem, 3vw, 2.6rem);
+
+    padding-right: clamp(1.4rem, 3vw, 2.6rem);
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--inkOnDark);
+
+    letter-spacing: 0.22em;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+
+}
+
+.marqueeState
+{
+
+    color: var(--blush);
+
+}
+
+/* A painted dab between towns, cut from the brush the studio uses
+   everywhere else. */
+
+.marqueeTrack li::after
+{
+
+    content: '';
+
+    display: block;
+
+    width: 1.6rem;
+
+    height: 5px;
+
+    background-color: var(--blush);
+
+    -webkit-mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    mask-image: url('../images/decorative/roseBrushStroke.svg');
+
+    -webkit-mask-size: 100% 100%;
+
+    mask-size: 100% 100%;
+
+    -webkit-mask-repeat: no-repeat;
+
+    mask-repeat: no-repeat;
+
+    opacity: 0.8;
+
+}
+
+@keyframes marqueeDrift
+{
+
+    from
+    {
+
+        transform: translateX(0);
+
+    }
+
+    to
+    {
+
+        transform: translateX(-50%);
+
+    }
+
+}
+
+
+/* ============================================================
+   PAGE HEAD — inner pages
+============================================================ */
+
+.pageHero
+{
+
+    padding: clamp(2rem, 4vw, 3.5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+
+}
+
+.pageHeroInner
+{
+
+    position: relative;
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.pageHeroInner::before
+{
+
+    content: '';
+
+    position: absolute;
+
+    top: 1.5rem;
+
+    left: calc(var(--gutter) - 3%);
+
+    width: min(34rem, 70%);
+
+    height: 9rem;
+
+    z-index: -1;
+
+    opacity: 0.6;
+
+    background-image: url('../images/decorative/heroPaintStroke.svg');
+
+    background-repeat: no-repeat;
+
+    background-size: 100% 100%;
+
+}
+
+.breadcrumb
+{
+
+    margin-bottom: 1.1rem;
+
+}
+
+.breadcrumb ol
+{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 0.55rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--inkSoft);
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+
+}
+
+.breadcrumb li + li::before
+{
+
+    content: '/';
+
+    padding-right: 0.55rem;
+
+    color: var(--rose);
+
+}
+
+.breadcrumb a
+{
+
+    color: var(--inkSoft);
+
+    text-decoration: none;
+
+    text-underline-offset: 0.3em;
+
+}
+
+.breadcrumb a:hover,
+.breadcrumb a:focus-visible
+{
+
+    color: var(--roseInk);
+
+    text-decoration: underline;
+
+}
+
+.pageHeroHeading
+{
+
+    max-width: 20ch;
+
+    font-size: var(--stepPageHead);
+
+    margin-bottom: 1.1rem;
+
+}
+
+.pageHeroLede
+{
+
+    max-width: 52ch;
+
+    font-size: var(--stepSub);
+
+    line-height: 1.5;
+
+    color: var(--inkSoft);
+
+}
+
+
+/* ============================================================
+   GALLERY
+============================================================ */
+
+.gallerySection
+{
+
+    padding: clamp(2rem, 4vw, 3.5rem) 0 var(--sectionPad);
+
+}
+
+.galleryInner
+{
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.gallerySection .sectionHead
+{
+
+    margin-bottom: clamp(1.8rem, 3.2vw, 2.8rem);
+
+}
+
+.galleryGrid
+{
+
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    align-items: end;
+
+    gap: clamp(1.1rem, 2.4vw, 2.2rem);
+
+    padding-bottom: 1.4rem;
+
+    border-bottom: 3px solid rgba(var(--ruleInk), 0.4);
+
+}
+
+/* The pieces keep the shelf's deliberate stagger rather than
+   snapping to a uniform card height. */
+
+.galleryGrid .pieceCard:nth-child(4n + 1) .pieceFrame
+{
+
+    transform: rotate(-1.2deg);
+
+}
+
+.galleryGrid .pieceCard:nth-child(4n + 2) .pieceFrame
+{
+
+    transform: rotate(1.5deg) translateY(-0.9rem);
+
+}
+
+.galleryGrid .pieceCard:nth-child(4n + 3) .pieceFrame
+{
+
+    transform: rotate(-0.7deg) translateY(0.5rem);
+
+}
+
+.galleryGrid .pieceCard:nth-child(4n + 4) .pieceFrame
+{
+
+    transform: rotate(1.1deg);
+
+}
+
+.galleryGrid .pieceFrame img
+{
+
+    aspect-ratio: 4 / 5;
+
+}
+
+.galleryFoot
+{
+
+    max-width: 56ch;
+
+    margin-top: 1.8rem;
+
+    font-size: var(--stepSub);
+
+    line-height: 1.5;
+
+    color: var(--inkSoft);
+
+}
+
+
+/* ============================================================
+   SURFACES PAGE
+============================================================ */
+
+.surfacesPage
+{
+
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+
+}
+
+.surfaceShelfLarge
+{
+
+    grid-template-columns: repeat(6, 1fr);
+
+    row-gap: clamp(2rem, 4vw, 3rem);
+
+}
+
+.surfaceShelfLarge .surfaceItem,
+.surfaceShelfLarge .surfaceItem:nth-child(2),
+.surfaceShelfLarge .surfaceItem:nth-child(5)
+{
+
+    grid-column: span 2;
+
+}
+
+.surfaceShelfLarge .surfaceName
+{
+
+    font-size: 1.3rem;
+
+}
+
+.surfacesPageNote
+{
+
+    max-width: 46rem;
+
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+
+}
+
+.surfacesPageNote .sectionLede
+{
+
+    margin-bottom: 1.8rem;
+
+}
+
+
+/* ============================================================
+   EVENTS
+============================================================ */
+
+.eventSection
+{
+
+    padding: clamp(1.5rem, 3vw, 2.5rem) 0 var(--sectionPad);
+
+}
+
+.eventInner
+{
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+
+    align-items: center;
+
+    gap: clamp(2rem, 4.5vw, 4rem);
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.eventCard
+{
+
+    margin: 1.8rem 0;
+
+    padding: 1.4rem 1.5rem;
+
+    background-color: rgba(251, 243, 236, 0.72);
+
+    border: 1px solid rgba(var(--ruleInk), 0.3);
+
+    border-radius: 2px;
+
+    box-shadow: var(--shadowLedge);
+
+}
+
+.eventCardName
+{
+
+    font-family: var(--fontDisplay);
+
+    font-size: 1.3rem;
+
+    line-height: 1.2;
+
+    color: var(--inkDeep);
+
+}
+
+.eventCardTime
+{
+
+    padding: 0.3rem 0 1rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--roseInk);
+
+    letter-spacing: 0.19em;
+
+    text-transform: uppercase;
+
+}
+
+.eventCardLarge .eventCardName
+{
+
+    font-size: var(--stepSubhead);
+
+}
+
+
+/* ============================================================
+   SERVICE AREA
+============================================================ */
+
+.areaSection
+{
+
+    padding: 0 0 var(--sectionPad);
+
+}
+
+.areaInner
+{
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.areaList
+{
+
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 1.1rem 1.5rem;
+
+    margin: 2rem 0 1.5rem;
+
+    padding: 1.6rem 0;
+
+    border-top: 1px solid rgba(var(--ruleInk), 0.32);
+
+    border-bottom: 1px solid rgba(var(--ruleInk), 0.32);
+
+}
+
+.areaList li
+{
+
+    font-family: var(--fontDisplay);
+
+    font-size: 1.3rem;
+
+    line-height: 1.15;
+
+    color: var(--inkDeep);
+
+}
+
+.areaList li span
+{
+
+    display: block;
+
+    padding-top: 0.22rem;
+
+    font-size: var(--stepLabel);
+
+    color: var(--inkSoft);
+
+    letter-spacing: 0.19em;
+
+    text-transform: uppercase;
+
+}
+
+
+/* ============================================================
+   CONTACT
+============================================================ */
+
+.contactSection
+{
+
+    padding: clamp(1.5rem, 3vw, 2.5rem) 0 clamp(2rem, 4vw, 3.5rem);
+
+}
+
+.contactInner
+{
+
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: clamp(1.5rem, 3vw, 3rem);
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter) clamp(2rem, 4vw, 3rem);
+
+    border-bottom: 1px solid rgba(var(--ruleInk), 0.3);
+
+}
+
+.contactPanel .footerNavHeading
+{
+
+    color: var(--roseInk);
+
+}
+
+.contactLine
+{
+
+    margin-bottom: 0.5rem;
+
+    color: var(--inkBody);
+
+}
+
+
+/* ============================================================
+   PROCESS — what helps
+============================================================ */
+
+.helpsList
+{
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+
+    margin-top: clamp(1.8rem, 3.2vw, 2.6rem);
+
+}
+
+.helpsList li
+{
+
+    padding-top: 1.1rem;
+
+    border-top: 1px solid rgba(var(--ruleInk), 0.35);
+
+}
+
+.helpsList h3
+{
+
+    margin-bottom: 0.5rem;
+
+    font-size: 1.3rem;
+
+}
+
+.helpsList p
+{
+
+    max-width: 46ch;
+
+    color: var(--inkSoft);
+
+}
+
+
+/* ============================================================
+   STORY
+============================================================ */
+
+.storySection
+{
+
+    padding: clamp(1.5rem, 3vw, 2.5rem) 0 var(--sectionPad);
+
+}
+
+.storyInner
+{
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+
+    align-items: center;
+
+    gap: clamp(2rem, 5vw, 4.5rem);
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.storyFigure
+{
+
+    margin: 0;
+
+    padding: 1rem;
+
+    background-color: var(--wallHigh);
+
+    border-radius: 50%;
+
+    box-shadow: var(--shadowProp);
+
+}
+
+.storyFigure img
+{
+
+    width: 100%;
+
+    border-radius: 50%;
+
+}
+
+.storyWords p
+{
+
+    max-width: 56ch;
+
+    margin-bottom: 1.1rem;
+
+    color: var(--inkBody);
+
+}
+
+.storyPromises
+{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.6rem 1.6rem;
+
+    margin-top: 1.6rem;
+
+    padding-top: 1.4rem;
+
+    border-top: 1px solid rgba(var(--ruleInk), 0.32);
+
+}
+
+.storyPromises li
+{
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--roseInk);
+
+    letter-spacing: 0.2em;
+
+    text-transform: uppercase;
+
+}
+
+.storyBelief
+{
+
+    padding: var(--sectionPad) 0;
+
+    color: var(--inkOnDark);
+
+    background-color: var(--wallClay);
+
+    background-image:
+        radial-gradient(90% 70% at 10% -10%, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0) 58%),
+        radial-gradient(90% 80% at 102% 112%, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0) 60%);
+
+}
+
+.storyBeliefInner
+{
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.storyBeliefInner .sectionHeading
+{
+
+    color: var(--inkOnDark);
+
+}
+
+.storyBeliefInner .scriptLine
+{
+
+    color: var(--blushPale);
+
+}
+
+.storyBeliefGrid
+{
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+
+    margin: clamp(1.8rem, 3.4vw, 2.8rem) 0 clamp(2rem, 4vw, 3rem);
+
+}
+
+.storyBeliefGrid > div
+{
+
+    padding-top: 1.1rem;
+
+    border-top: 1px solid rgba(247, 237, 228, 0.3);
+
+}
+
+.storyBeliefGrid h3
+{
+
+    margin-bottom: 0.5rem;
+
+    font-size: 1.3rem;
+
+    color: var(--inkOnDark);
+
+}
+
+.storyBeliefGrid p
+{
+
+    max-width: 44ch;
+
+    color: var(--inkSoftOnClay);
+
+}
+
+
+/* ============================================================
+   PIECE VIEWER — additions for the full catalogue
+============================================================ */
+
+.pieceViewerStage
+{
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 0.8rem;
+
+    min-width: 0;
+
+}
+
+.pieceViewerViews
+{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.55rem;
+
+}
+
+.pieceViewerViews[hidden]
+{
+
+    display: none;
+
+}
+
+.pieceViewerThumb
+{
+
+    display: block;
+
+    width: 3.6rem;
+
+    padding: 0.2rem;
+
+    background-color: var(--wallHigh);
+
+    border: 1px solid transparent;
+
+    border-radius: 1px;
+
+    box-shadow: var(--shadowLedge);
+
+    transition: border-color 180ms var(--ease);
+
+}
+
+.pieceViewerThumb img
+{
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    object-fit: cover;
+
+}
+
+.pieceViewerThumb.isCurrent
+{
+
+    border-color: var(--roseDeep);
+
+}
+
+.pieceViewerCount
+{
+
+    padding-top: 1.1rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--inkSoft);
+
+    letter-spacing: 0.19em;
+
+    text-transform: uppercase;
+
+}
+
+.pieceViewerStep
+{
+
+    position: absolute;
+
+    top: 50%;
+
+    z-index: 3;
+
+    display: grid;
+
+    place-items: center;
+
+    width: 2.6rem;
+
+    height: 2.6rem;
+
+    color: var(--inkDeep);
+
+    background-color: rgba(251, 243, 236, 0.92);
+
+    border-radius: 50%;
+
+    box-shadow: var(--shadowLedge);
+
+    transform: translateY(-50%);
+
+    transition: background-color 180ms var(--ease);
+
+}
+
+.pieceViewerStep:hover,
+.pieceViewerStep:focus-visible
+{
+
+    background-color: var(--blushPale);
+
+}
+
+.pieceViewerStep svg
+{
+
+    width: 1rem;
+
+    height: 1rem;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.6;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+}
+
+.pieceViewerPrev
+{
+
+    left: -1.3rem;
+
+}
+
+.pieceViewerNext
+{
+
+    right: -1.3rem;
+
+}
+
+
+/* ============================================================
+   FORM — the piece a visitor was looking at
+============================================================ */
+
+.formPieceRef
+{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: baseline;
+
+    gap: 0.4rem 0.8rem;
+
+    padding: 0.85rem 1rem;
+
+    background-color: rgba(163, 164, 143, 0.2);
+
+    border-left: 1px solid var(--sage);
+
+    border-radius: 1px;
+
+}
+
+.formPieceRef[hidden]
+{
+
+    display: none;
+
+}
+
+.formPieceRefLabel
+{
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--inkSoft);
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+
+}
+
+.formPieceRefName
+{
+
+    flex: 1 1 12rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: 1.1rem;
+
+    line-height: 1.3;
+
+    color: var(--inkDeep);
+
+}
+
+.formPieceRefClear
+{
+
+    font-family: var(--fontDisplay);
+
+    font-size: 0.82rem;
+
+    color: var(--roseInk);
+
+    letter-spacing: 0.06em;
+
+    text-decoration: underline;
+
+    text-underline-offset: 0.3em;
+
+}
+
+
+/* ============================================================
+   FOOTER — promises and developer credit
+============================================================ */
+
+.footerPromises
+{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.35rem 1.1rem;
+
+    padding-top: 1.1rem;
+
+}
+
+.footerPromises li
+{
+
+    font-family: var(--fontDisplay);
+
+    font-size: 0.66rem;
+
+    color: var(--inkSoftOnSage);
+
+    letter-spacing: 0.2em;
+
+    text-transform: uppercase;
+
+}
+
+.devCredit
+{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.6rem;
+
+    margin-left: auto;
+
+}
+
+.devCreditLabel
+{
+
+    font-size: 0.82rem;
+
+    line-height: 1.5;
+
+    color: var(--sageFaint);
+
+    opacity: 0.55;
+
+}
+
+.devCreditMark
+{
+
+    width: auto;
+
+    height: 2.1rem;
+
+    object-fit: contain;
+
+    opacity: 0.45;
+
+    transition: opacity 220ms var(--ease);
+
+}
+
+.devCreditMark:hover
+{
+
+    opacity: 1;
+
+}
+
+
+/* ============================================================
+   MEDIA QUERIES — new components
+============================================================ */
+
+@media (max-width: 1024px)
+{
+
+    .galleryGrid
+    {
+
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    }
+
+    .surfaceShelfLarge .surfaceItem,
+    .surfaceShelfLarge .surfaceItem:nth-child(2),
+    .surfaceShelfLarge .surfaceItem:nth-child(5)
+    {
+
+        grid-column: span 3;
+
+    }
+
+    .eventInner,
+    .storyInner
+    {
+
+        grid-template-columns: minmax(0, 1fr);
+
+    }
+
+    .storyFigure
+    {
+
+        max-width: 18rem;
+
+    }
+
+    .areaList
+    {
+
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    }
+
+    .contactInner
+    {
+
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+    }
+
+}
+
+@media (max-width: 720px)
+{
+
+    .galleryGrid
+    {
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 1rem;
+
+        row-gap: 1.8rem;
+
+    }
+
+    .galleryGrid .pieceCard:nth-child(4n + 2) .pieceFrame,
+    .galleryGrid .pieceCard:nth-child(4n + 3) .pieceFrame
+    {
+
+        transform: none;
+
+    }
+
+    .areaList,
+    .helpsList,
+    .storyBeliefGrid,
+    .contactInner
+    {
+
+        grid-template-columns: minmax(0, 1fr);
+
+    }
+
+    .pieceViewerPrev
+    {
+
+        left: 0.35rem;
+
+    }
+
+    .pieceViewerNext
+    {
+
+        right: 0.35rem;
+
+    }
+
+    .pieceViewerStep
+    {
+
+        top: auto;
+
+        bottom: 0.6rem;
+
+        transform: none;
+
+    }
+
+    .devCredit
+    {
+
+        margin-left: 0;
+
+    }
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION — new components
+============================================================ */
+
+@media (prefers-reduced-motion: reduce)
+{
+
+    .marqueeViewport
+    {
+
+        animation: none;
+
+        width: 100%;
+
+    }
+
+    .marqueeTrack
+    {
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        row-gap: 0.5rem;
+
+    }
+
+    .marqueeTrack[aria-hidden='true']
+    {
+
+        display: none;
+
+    }
+
+}

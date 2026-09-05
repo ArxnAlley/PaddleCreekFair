@@ -1,0 +1,430 @@
+/* ============================================================
+   PADDLE CREEK PAINTS — stylePages.css
+
+   Page-specific layers that only some pages load. The shared
+   system lives in styleIndex.css and is loaded first.
+============================================================ */
+
+
+/* ============================================================
+   VENDOR FAIR — built for a phone at the table
+============================================================ */
+
+/* The announcement band is a real painted brush stroke, not a CSS shape. The
+   complete image is shown at its natural aspect ratio — no cropping, no
+   stretching — inset within the viewport so the painted ends and a sliver of
+   cream page background are both visible. .fairBarBrushWrap centers the
+   stroke and gives it a legibility floor for narrow phones (where the image
+   alone would render too short for two lines of text); the image is always
+   vertically centered within that box, so .fairBarInner — which shares that
+   same centering — lands on the stroke's solid, symmetric middle band rather
+   than its frayed top or bottom edge. */
+
+.fairBar
+{
+
+    position: relative;
+
+    padding: clamp(0.9rem, 2vw, 1.3rem) 0;
+
+}
+
+.fairBarBrushWrap
+{
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 95vw;
+
+    min-height: clamp(3.5rem, 9vw, 4.75rem);
+
+    margin: 0 auto;
+
+}
+
+.fairBarBrushImage
+{
+
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    pointer-events: none;
+
+    user-select: none;
+
+}
+
+.fairBarInner
+{
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 0.2rem 1rem;
+
+    padding: 0 9%;
+
+    text-align: center;
+
+}
+
+.fairBarEvent
+{
+
+    font-family: var(--fontDisplay);
+
+    font-size: 1.1rem;
+
+    line-height: 1.2;
+
+    color: var(--inkOnDark);
+
+}
+
+.fairBarTime
+{
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--blush);
+
+    letter-spacing: 0.2em;
+
+    text-transform: uppercase;
+
+}
+
+.fairSection
+{
+
+    padding: clamp(1.8rem, 4vw, 3rem) 0 var(--sectionPad);
+
+}
+
+.fairInner
+{
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.fairHeading
+{
+
+    max-width: 18ch;
+
+    font-size: var(--stepPageHead);
+
+    margin-bottom: 1rem;
+
+}
+
+.fairLede
+{
+
+    max-width: 48ch;
+
+    margin-bottom: 1.6rem;
+
+    font-size: var(--stepSub);
+
+    line-height: 1.5;
+
+    color: var(--inkSoft);
+
+}
+
+.fairAction
+{
+
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+
+}
+
+.fairNote
+{
+
+    max-width: 52ch;
+
+    margin-top: clamp(2.2rem, 4.5vw, 3.5rem);
+
+}
+
+
+/* ============================================================
+   VENDOR FAIR — hero video placeholder
+============================================================ */
+
+.fairHeroGrid
+{
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+
+    align-items: center;
+
+    gap: clamp(1.8rem, 4vw, 3.5rem);
+
+    margin-bottom: clamp(2.2rem, 4vw, 3rem);
+
+}
+
+.fairHeroWords .fairAction
+{
+
+    margin-bottom: 0;
+
+}
+
+.heroVideoPlaceholder
+{
+
+    margin: 0;
+
+    padding: 0.6rem 0.6rem 1rem;
+
+    background-color: var(--wallHigh);
+
+    border-radius: 1px;
+
+    box-shadow: var(--shadowProp);
+
+    transform: rotate(1.1deg);
+
+}
+
+.heroVideoFrame
+{
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 0.7rem;
+
+    aspect-ratio: 16 / 10;
+
+    background-color: var(--wallBase);
+
+    background-image: var(--grain);
+
+    background-size: 180px 180px;
+
+    border-radius: 1px;
+
+}
+
+.heroVideoIcon
+{
+
+    display: grid;
+
+    place-items: center;
+
+    width: 3.4rem;
+
+    height: 3.4rem;
+
+    color: var(--wallHigh);
+
+    background-color: var(--roseDeep);
+
+    border-radius: 50%;
+
+    box-shadow: var(--shadowLedge);
+
+}
+
+.heroVideoIcon svg
+{
+
+    width: 1.3rem;
+
+    height: 1.3rem;
+
+}
+
+.heroVideoLabel
+{
+
+    font-family: var(--fontScript);
+
+    font-size: 1.5rem;
+
+    line-height: 1;
+
+    color: var(--roseInk);
+
+}
+
+.heroVideoNote
+{
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--inkSoft);
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+
+}
+
+
+/* ============================================================
+   ABOUT — portrait placeholder
+============================================================ */
+
+.aboutPortraitPlaceholder
+{
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 0.6rem;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    background-color: var(--wallBase);
+
+    background-image: var(--grain);
+
+    background-size: 180px 180px;
+
+    border: 1px dashed rgba(var(--ruleInk), 0.35);
+
+    border-radius: 1px;
+
+}
+
+.aboutPortraitIcon
+{
+
+    width: 2.6rem;
+
+    height: 2.6rem;
+
+    fill: none;
+
+    stroke: var(--inkSoft);
+
+    stroke-width: 1.3;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+}
+
+.aboutPortraitNote
+{
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--inkSoft);
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+
+}
+
+
+@media (max-width: 1024px)
+{
+
+    .fairBarBrushWrap
+    {
+
+        width: 97vw;
+
+    }
+
+    .fairHeroGrid
+    {
+
+        grid-template-columns: minmax(0, 1fr);
+
+        gap: clamp(1.6rem, 4vw, 2.2rem);
+
+    }
+
+    .fairHeroMedia
+    {
+
+        max-width: 28rem;
+
+    }
+
+}
+
+
+@media (max-width: 720px)
+{
+
+    /* At the table this is read one-handed, so the tap targets grow
+       and the catalogue drops to two generous columns. */
+
+    .fairAction
+    {
+
+        display: flex;
+
+        width: 100%;
+
+        padding-block: 1.1rem;
+
+    }
+
+    .fairGrid
+    {
+
+        gap: 0.9rem;
+
+        row-gap: 1.6rem;
+
+    }
+
+}
