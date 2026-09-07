@@ -118,7 +118,7 @@ const pieceCatalogue = [
     {
         id: 'haunted',
         subject: 'Ghosts, a cabin and a harvest moon',
-        surface: 'Wooden board',
+        surface: 'Wood cutting board',
         note: 'A seasonal piece on a wooden board, finished with a lace tie so it can hang.',
         width: 965,
         height: 1286,
@@ -175,7 +175,7 @@ const pieceCatalogue = [
     {
         id: 'venue',
         subject: 'A mountain lake, hand lettered',
-        surface: 'Wooden board',
+        surface: 'Wood cutting board',
         note: 'A keepsake board painted with a specific place, then hand-lettered with the words that matter to the people it was made for.',
         width: 640,
         height: 935,
@@ -1370,8 +1370,8 @@ async function submitOfferForm(event)
 
             setOfferStatus(
                 result.emailSent
-                    ? 'You’re in! Check your email. Your 10% discount code is on '
-                        + 'its way. Look for an email from Paddle Creek Paints.'
+                    ? 'Your 10% off code is on its way! Check your inbox in a moment. If you '
+                        + 'don’t see it, take a quick look in your Spam or Promotions folder.'
                     : (result.message || 'You are on the list. If the email does not '
                         + 'arrive, write to ' + STUDIO_EMAIL + '.'),
                 true
