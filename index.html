@@ -1078,6 +1078,104 @@
 </div>
 
 
+<!-- ============================================================
+     FORM MODALS
+
+     Each modal has no form fields of its own — it is an empty
+     mount point. Opening one moves the real, single copy of
+     #commissionForm or #offerForm into it (js/siteJS.js), so
+     validation, submission, the Apps Script endpoint, and success/
+     error states are exactly the same code as the inline forms
+     below. Closing moves the form back to its original section.
+============================================================ -->
+
+<div
+    class="formModal"
+    id="commissionModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="commissionModalHeading"
+    hidden
+>
+
+    <div class="formModalScrim" data-form-modal-close></div>
+
+    <div class="formModalPanel">
+
+        <button
+            class="formModalClose"
+            type="button"
+            data-form-modal-close
+            aria-label="Close"
+        >
+
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 5 L19 19 M19 5 L5 19" />
+            </svg>
+
+        </button>
+
+        <div class="formModalHead">
+
+            <h2 class="formModalHeading" id="commissionModalHeading">Ask about a piece.</h2>
+
+            <p class="formModalLede">
+                Tell me which piece caught your eye, or describe something of your own. I will
+                get back to you after the event.
+            </p>
+
+        </div>
+
+        <div class="formModalMount" id="commissionModalMount"></div>
+
+    </div>
+
+</div>
+
+<div
+    class="formModal"
+    id="offerModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="offerModalHeading"
+    hidden
+>
+
+    <div class="formModalScrim" data-form-modal-close></div>
+
+    <div class="formModalPanel">
+
+        <button
+            class="formModalClose"
+            type="button"
+            data-form-modal-close
+            aria-label="Close"
+        >
+
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 5 L19 19 M19 5 L5 19" />
+            </svg>
+
+        </button>
+
+        <div class="formModalHead">
+
+            <h2 class="formModalHeading" id="offerModalHeading">Just want the code?</h2>
+
+            <p class="formModalLede">
+                Leave your email and your discount code comes straight back to you. Nothing
+                else is asked for.
+            </p>
+
+        </div>
+
+        <div class="formModalMount formModalMountClaim" id="offerModalMount"></div>
+
+    </div>
+
+</div>
+
+
 <!--
     GA4 and Microsoft Clarity are configured (or not) in one place:
     js/analyticsConfig.js. Both stay completely inert — no script tag is

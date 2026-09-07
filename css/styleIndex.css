@@ -3116,6 +3116,222 @@ body.isNavOpen
 
 
 /* ============================================================
+   FORM MODALS — the same two funnels, opened on the spot
+
+   Structurally identical to .pieceViewer above (fixed scrim +
+   panel, same fade/scale transition, same focus-trap contract) —
+   deliberately reusing that proven pattern rather than inventing a
+   second one. The panel itself never carries form styling: it just
+   hosts whichever real form (js/siteJS.js moves the DOM node in),
+   so the form's own existing card treatment travels with it.
+============================================================ */
+
+.formModal
+{
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 80;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: var(--gutter);
+
+}
+
+.formModal[hidden]
+{
+
+    display: none;
+
+}
+
+.formModalScrim
+{
+
+    position: absolute;
+
+    inset: 0;
+
+    background-color: rgba(52, 36, 30, 0.62);
+
+    -webkit-backdrop-filter: blur(6px);
+
+    backdrop-filter: blur(6px);
+
+    opacity: 0;
+
+    transition: opacity 320ms var(--ease);
+
+}
+
+.formModal.isOpen .formModalScrim
+{
+
+    opacity: 1;
+
+}
+
+.formModalPanel
+{
+
+    position: relative;
+
+    width: min(34rem, 100%);
+
+    max-height: 100%;
+
+    padding: clamp(1.2rem, 2.4vw, 2.2rem);
+
+    overflow-y: auto;
+
+    background-color: var(--wallBase);
+
+    background-image: var(--grain);
+
+    background-size: 180px 180px;
+
+    border-radius: 2px;
+
+    box-shadow: var(--shadowLift);
+
+    opacity: 0;
+
+    transform: translateY(18px) scale(0.985);
+
+    transition:
+        opacity 340ms var(--ease),
+        transform 420ms var(--ease);
+
+}
+
+.formModal.isOpen .formModalPanel
+{
+
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+
+}
+
+.formModalClose
+{
+
+    position: absolute;
+
+    top: 0.9rem;
+
+    right: 0.9rem;
+
+    z-index: 2;
+
+    display: grid;
+
+    place-items: center;
+
+    width: 2.6rem;
+
+    height: 2.6rem;
+
+    color: var(--inkDeep);
+
+    background-color: rgba(251, 243, 236, 0.9);
+
+    border-radius: 50%;
+
+    box-shadow: var(--shadowLedge);
+
+    transition: background-color 180ms var(--ease);
+
+}
+
+.formModalClose:hover,
+.formModalClose:focus-visible
+{
+
+    background-color: var(--blushPale);
+
+}
+
+.formModalClose svg
+{
+
+    width: 1.05rem;
+
+    height: 1.05rem;
+
+    stroke: currentColor;
+
+    stroke-width: 1.5;
+
+    stroke-linecap: round;
+
+    fill: none;
+
+}
+
+.formModalHead
+{
+
+    padding-right: 2.2rem;
+
+    margin-bottom: 1.4rem;
+
+}
+
+.formModalHeading
+{
+
+    font-size: var(--stepSubhead);
+
+}
+
+.formModalLede
+{
+
+    margin-top: 0.55rem;
+
+    color: var(--inkSoft);
+
+}
+
+/* The offer form carries no card of its own in its inline home — that
+   look comes from .offerPathClaim, which does not travel with it into
+   the modal. Reapplying the same values here (not new ones) keeps the
+   discount form looking exactly as it does inline. The commission
+   form needs no equivalent: .commissionForm already carries its own
+   card treatment wherever it goes. */
+
+.formModalMountClaim
+{
+
+    padding: clamp(1.5rem, 2.8vw, 2.3rem);
+
+    background-color: rgba(246, 221, 214, 0.46);
+
+    border: 1px solid rgba(157, 112, 100, 0.24);
+
+    border-radius: 2px;
+
+    box-shadow: var(--shadowLedge);
+
+}
+
+body.isFormModalOpen
+{
+
+    overflow: hidden;
+
+}
+
+
+/* ============================================================
    MEDIA QUERIES — tablet
 ============================================================ */
 

@@ -16,8 +16,9 @@
    11. Piece Inquiry Handoff
    12. Commission Form
    13. Ten Percent Offer
-   14. Event Listeners
-   15. Initialization
+   14. Form Modals
+   15. Event Listeners
+   16. Initialization
 ============================================================ */
 
 
@@ -230,6 +231,18 @@ const pieceViewerNext = document.querySelector('#pieceViewerNext');
 
 const commissionForm = document.querySelector('#commissionForm');
 
+/* Where #commissionForm and #offerForm actually live in the page,
+   captured once before either modal ever moves them, so closing a
+   modal can always put the real form back exactly where it started. */
+
+const commissionFormHomeParent = commissionForm ? commissionForm.parentNode : null;
+
+const commissionFormHomeNext = commissionForm ? commissionForm.nextSibling : null;
+
+const commissionModal = document.querySelector('#commissionModal');
+
+const commissionModalMount = document.querySelector('#commissionModalMount');
+
 const formStatus = document.querySelector('#formStatus');
 
 const formPieceRef = document.querySelector('#formPieceRef');
@@ -243,6 +256,14 @@ const pieceSurfaceField = document.querySelector('#pieceSurface');
 const pieceIdeaField = document.querySelector('#pieceIdea');
 
 const offerForm = document.querySelector('#offerForm');
+
+const offerFormHomeParent = offerForm ? offerForm.parentNode : null;
+
+const offerFormHomeNext = offerForm ? offerForm.nextSibling : null;
+
+const offerModal = document.querySelector('#offerModal');
+
+const offerModalMount = document.querySelector('#offerModalMount');
 
 const offerEmailField = document.querySelector('#offerEmail');
 
@@ -856,22 +877,7 @@ function carryPieceIntoCommission(event)
 
     closePieceViewer();
 
-    window.setTimeout(
-        function ()
-        {
-
-            commissionForm.scrollIntoView({ behavior: prefersReducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
-
-            if (pieceIdeaField)
-            {
-
-                pieceIdeaField.focus({ preventScroll: true });
-
-            }
-
-        },
-        prefersReducedMotion.matches ? 0 : 360
-    );
+    openCommissionModal();
 
 }
 
@@ -1409,6 +1415,142 @@ async function submitOfferForm(event)
 
 
 /* ============================================================
+   FORM MODALS
+
+   Every CTA that used to scroll the visitor down to the inline
+   forms now opens one of these instead, at the visitor's current
+   scroll position. Neither modal owns a form: opening one moves
+   the single real #commissionForm or #offerForm node into its
+   mount point, so every existing behaviour — validation, the
+   Apps Script endpoint, success/error states, honeypots, analytics
+   events — is the same code running in a new location. Closing
+   moves the form back to the section it started in.
+
+   Structurally the same contract as the piece viewer above: a
+   hidden/isOpen pair for the transition, a body class for the
+   scroll lock, a dedicated keydown listener per modal for the
+   Tab trap, and Escape handled in the shared document listener
+   below (Event Listeners).
+============================================================ */
+
+function openFormModal(modal, form, mount)
+{
+
+    if (!modal || !form || !mount)
+    {
+
+        return;
+
+    }
+
+    if (menuOpen)
+    {
+
+        closeMobileMenu();
+
+    }
+
+    lastFocusedElement = document.activeElement;
+
+    mount.appendChild(form);
+
+    modal.hidden = false;
+
+    document.body.classList.add('isFormModalOpen');
+
+    window.requestAnimationFrame(function ()
+    {
+
+        modal.classList.add('isOpen');
+
+    });
+
+    modal.querySelector('.formModalClose').focus();
+
+}
+
+
+function closeFormModal(modal, form, homeParent, homeNext)
+{
+
+    if (!modal || !form || !homeParent)
+    {
+
+        return;
+
+    }
+
+    modal.classList.remove('isOpen');
+
+    document.body.classList.remove('isFormModalOpen');
+
+    const finish = function ()
+    {
+
+        modal.hidden = true;
+
+        homeParent.insertBefore(form, homeNext);
+
+    };
+
+    if (prefersReducedMotion.matches)
+    {
+
+        finish();
+
+    }
+    else
+    {
+
+        window.setTimeout(finish, 320);
+
+    }
+
+    if (lastFocusedElement)
+    {
+
+        lastFocusedElement.focus();
+
+        lastFocusedElement = null;
+
+    }
+
+}
+
+
+function openCommissionModal()
+{
+
+    openFormModal(commissionModal, commissionForm, commissionModalMount);
+
+}
+
+
+function closeCommissionModal()
+{
+
+    closeFormModal(commissionModal, commissionForm, commissionFormHomeParent, commissionFormHomeNext);
+
+}
+
+
+function openOfferModal()
+{
+
+    openFormModal(offerModal, offerForm, offerModalMount);
+
+}
+
+
+function closeOfferModal()
+{
+
+    closeFormModal(offerModal, offerForm, offerFormHomeParent, offerFormHomeNext);
+
+}
+
+
+/* ============================================================
    EVENT LISTENERS
 ============================================================ */
 
@@ -1484,6 +1626,34 @@ document.addEventListener(
                 stepPieceViewer(-1);
 
                 return;
+
+            }
+
+            return;
+
+        }
+
+        if (commissionModal && !commissionModal.hidden)
+        {
+
+            if (event.key === 'Escape')
+            {
+
+                closeCommissionModal();
+
+            }
+
+            return;
+
+        }
+
+        if (offerModal && !offerModal.hidden)
+        {
+
+            if (event.key === 'Escape')
+            {
+
+                closeOfferModal();
 
             }
 
@@ -1594,6 +1764,105 @@ if (pieceViewer)
     );
 
 }
+
+if (commissionModal)
+{
+
+    commissionModal.addEventListener(
+        'keydown',
+        function (event)
+        {
+
+            if (event.key === 'Tab')
+            {
+
+                trapFocus(commissionModal, event);
+
+            }
+
+        }
+    );
+
+    Array.from(commissionModal.querySelectorAll('[data-form-modal-close]')).forEach(function (control)
+    {
+
+        control.addEventListener(
+            'click',
+            closeCommissionModal
+        );
+
+    });
+
+}
+
+if (offerModal)
+{
+
+    offerModal.addEventListener(
+        'keydown',
+        function (event)
+        {
+
+            if (event.key === 'Tab')
+            {
+
+                trapFocus(offerModal, event);
+
+            }
+
+        }
+    );
+
+    Array.from(offerModal.querySelectorAll('[data-form-modal-close]')).forEach(function (control)
+    {
+
+        control.addEventListener(
+            'click',
+            closeOfferModal
+        );
+
+    });
+
+}
+
+/* Every commission CTA except the piece viewer's own (that one carries a
+   piece reference and is wired separately above, through
+   carryPieceIntoCommission) opens the modal instead of jumping down the
+   page. */
+
+Array.from(document.querySelectorAll('a[href="#startAPiece"]:not(#pieceViewerAction)')).forEach(function (link)
+{
+
+    link.addEventListener(
+        'click',
+        function (event)
+        {
+
+            event.preventDefault();
+
+            openCommissionModal();
+
+        }
+    );
+
+});
+
+Array.from(document.querySelectorAll('a[href="#tenOffOffer"]')).forEach(function (link)
+{
+
+    link.addEventListener(
+        'click',
+        function (event)
+        {
+
+            event.preventDefault();
+
+            openOfferModal();
+
+        }
+    );
+
+});
 
 pieceLiftButtons.forEach(function (button)
 {
