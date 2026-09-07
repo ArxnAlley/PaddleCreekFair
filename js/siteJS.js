@@ -10,12 +10,14 @@
    5. Utility Functions
    6. Mobile Menu
    7. Header
-   8. Service Marquee
-   9. Piece Viewer
-   10. Piece Inquiry Handoff
-   11. Commission Form
-   12. Event Listeners
-   13. Initialization
+   8. Meet Mary Video
+   9. Service Marquee
+   10. Piece Viewer
+   11. Piece Inquiry Handoff
+   12. Commission Form
+   13. Ten Percent Offer
+   14. Event Listeners
+   15. Initialization
 ============================================================ */
 
 
@@ -23,9 +25,41 @@
    CONSTANTS
 ============================================================ */
 
-const STUDIO_EMAIL = 'hello@paddlecreekpaints.com';
+const STUDIO_EMAIL = 'paddlecreekpaints@gmail.com';
+
+const ARTIST_NAME = 'Mary';
 
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input, select, textarea';
+
+
+/* ============================================================
+   SITE CONFIGURATION
+
+   ── THE ONE THING TO FILL IN ──────────────────────────────
+
+   offerEndpointUrl is the deployed Google Apps Script Web App
+   URL that receives 10% offer signups. Paste the URL ending in
+   /exec between the quotes below and nothing else on the site
+   needs to change.
+
+   Deployment instructions: googleAppsScript/README.md
+
+   Until a real URL is pasted here, the offer form stays polite
+   and honest: it tells the visitor to write to the studio
+   instead of pretending a signup was received.
+============================================================ */
+
+const paddleCreekConfig = {
+
+    /* Paste the deployed Google Apps Script Web App URL here. */
+
+    offerEndpointUrl: 'https://script.google.com/macros/s/AKfycbyLgZ9dC8Zs_6J0XttJq-C6m1qkWHXpgzJkeDkbj1Rs3RWbqDMhKgatm-WpD9CZ9ly7Dw/exec',
+
+    /* How long to wait for the endpoint before giving up, in ms. */
+
+    offerRequestTimeout: 15000
+
+};
 
 
 /* ============================================================
@@ -164,6 +198,8 @@ const pieceCatalogue = [
 
 const siteHeader = document.querySelector('.siteHeader');
 
+const headerInner = document.querySelector('.headerInner');
+
 const menuToggle = document.querySelector('#menuToggle');
 
 const primaryNav = document.querySelector('#primaryNav');
@@ -206,7 +242,17 @@ const pieceSurfaceField = document.querySelector('#pieceSurface');
 
 const pieceIdeaField = document.querySelector('#pieceIdea');
 
+const offerForm = document.querySelector('#offerForm');
+
+const offerEmailField = document.querySelector('#offerEmail');
+
+const offerStatus = document.querySelector('#offerStatus');
+
 const footerYear = document.querySelector('#footerYear');
+
+const heroVideo = document.querySelector('#heroVideo');
+
+const heroVideoPlayButton = document.querySelector('#heroVideoPlayButton');
 
 
 /* ============================================================
@@ -220,6 +266,12 @@ let viewerIndex = 0;
 let lastFocusedElement = null;
 
 let referencedPieceId = '';
+
+let offerSubmitting = false;
+
+let commissionSubmitting = false;
+
+let lastOfferEmailSent = '';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -341,6 +393,12 @@ function setFieldError(field, message)
    MOBILE MENU
 ============================================================ */
 
+/* The menu is a full-screen panel on phones, so opening it is a modal-ish
+   act: the page behind it stops scrolling, the header drops its blur (see
+   styleIndex.css — the blur is what used to trap the panel inside the header
+   box), and focus moves into the panel. The toggle itself never moves; only
+   the bars inside it morph into an X. */
+
 function openMobileMenu()
 {
 
@@ -349,6 +407,24 @@ function openMobileMenu()
     primaryNav.classList.add('isOpen');
 
     menuToggle.setAttribute('aria-expanded', 'true');
+
+    document.body.classList.add('isNavOpen');
+
+    if (siteHeader)
+    {
+
+        siteHeader.classList.add('navOpen');
+
+    }
+
+    const firstLink = primaryNav.querySelector('a[href]');
+
+    if (firstLink)
+    {
+
+        firstLink.focus();
+
+    }
 
 }
 
@@ -361,6 +437,15 @@ function closeMobileMenu()
     primaryNav.classList.remove('isOpen');
 
     menuToggle.setAttribute('aria-expanded', 'false');
+
+    document.body.classList.remove('isNavOpen');
+
+    if (siteHeader)
+    {
+
+        siteHeader.classList.remove('navOpen');
+
+    }
 
 }
 
@@ -399,6 +484,67 @@ function updateHeaderState()
     }
 
     siteHeader.classList.remove('isStuck');
+
+}
+
+
+/* ============================================================
+   MEET MARY VIDEO
+
+   The cover the visitor sees before playback is the real
+   artistPhoto (set as the video's poster in the HTML) — not an
+   extracted video frame. This function is the only thing that
+   starts playback: it is called solely from the play button's
+   click handler, so preload="none" on the video only ever
+   resolves into an actual fetch after a genuine user gesture.
+============================================================ */
+
+function playHeroVideo()
+{
+
+    if (!heroVideo || !heroVideoPlayButton)
+    {
+
+        return;
+
+    }
+
+    function revealVideo()
+    {
+
+        heroVideoPlayButton.hidden = true;
+
+        /* Not focusable while the button covers it (tabindex="-1" in the
+           markup), so a keyboard user tabbing past doesn't land on a
+           hidden, covered video before ever reaching the visible button.
+           Restored the moment it is actually playable, then focused so
+           native keyboard media controls work immediately. */
+
+        heroVideo.removeAttribute('tabindex');
+
+        heroVideo.focus();
+
+    }
+
+    const playResult = heroVideo.play();
+
+    if (playResult && typeof playResult.then === 'function')
+    {
+
+        playResult.then(revealVideo).catch(function ()
+        {
+
+            /* Playback did not start — leave the button in place so the
+               visitor can try again rather than showing a bare, inert
+               video area. */
+
+        });
+
+        return;
+
+    }
+
+    revealVideo();
 
 }
 
@@ -731,12 +877,18 @@ function carryPieceIntoCommission(event)
 
 
 /* ============================================================
-   COMMISSION FORM
+   COMMISSION FORM  —  funnel 2 of 2
 
-   There is no server endpoint for this project yet. Rather than
-   pretend a submission was received, the form hands the visitor a
-   fully composed message in their own mail client and says so
-   plainly. Replace this handler when a backend exists.
+   Start a Piece posts to the same Apps Script Web App as the
+   10% offer, but declares submissionType 'commissionInquiry',
+   which routes it to the CommissionLeads sheet and its own pair
+   of emails. It shares no record, no sheet and no message with
+   the discount funnel, and submitting it never earns the
+   discount code.
+
+   Until an endpoint is configured it still falls back to the
+   original mail-client handoff rather than pretending to have
+   received anything.
 ============================================================ */
 
 function validateCommissionForm()
@@ -798,10 +950,103 @@ function validateCommissionForm()
 }
 
 
-function submitCommissionForm(event)
+function readCommissionFields()
+{
+
+    const referenced = findPiece(referencedPieceId);
+
+    return {
+
+        name: document.querySelector('#visitorName').value.trim(),
+
+        email: document.querySelector('#visitorEmail').value.trim(),
+
+        surface: pieceSurfaceField.value,
+
+        idea: pieceIdeaField.value.trim(),
+
+        occasion: document.querySelector('#pieceOccasion').value.trim(),
+
+        referencedPiece: referenced
+            ? referenced.subject + ' \u00b7 ' + referenced.surface
+            : ''
+
+    };
+
+}
+
+
+/* The fallback used only when no endpoint is configured yet: hand the
+   visitor a fully composed message in their own mail client and say
+   plainly that nothing was sent from the page. This is what the form did
+   before it had a backend, kept because a half-built endpoint should never
+   silently swallow somebody's commission. */
+
+function handOffCommissionByMail(fields)
+{
+
+    const subject = fields.referencedPiece
+        ? 'Enquiry about \u201c' + fields.referencedPiece + '\u201d'
+        : 'Custom piece enquiry \u2014 ' + fields.surface;
+
+    const bodyLines = [
+        'Name: ' + fields.name,
+        'Email: ' + fields.email,
+        'Surface: ' + fields.surface,
+        fields.occasion ? 'Occasion: ' + fields.occasion : null,
+        fields.referencedPiece ? 'Piece I was looking at: ' + fields.referencedPiece : null,
+        '',
+        fields.idea
+    ].filter(function (line)
+    {
+
+        return line !== null;
+
+    });
+
+    formStatus.classList.add('isSent');
+
+    formStatus.textContent = 'Your email app should be opening with this message ready to send. '
+        + 'If nothing opens, please write to ' + STUDIO_EMAIL + ' and paste it in \u2014 '
+        + 'nothing has been sent from this page yet.';
+
+    window.location.href = 'mailto:' + STUDIO_EMAIL
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body=' + encodeURIComponent(bodyLines.join('\n'));
+
+}
+
+
+function setCommissionSubmittingState(isSubmitting)
+{
+
+    commissionSubmitting = isSubmitting;
+
+    const submitButton = commissionForm.querySelector('.commissionSubmit');
+
+    if (submitButton)
+    {
+
+        submitButton.disabled = isSubmitting;
+
+        submitButton.textContent = isSubmitting ? 'Sending\u2026' : 'Send my idea';
+
+    }
+
+}
+
+
+async function submitCommissionForm(event)
 {
 
     event.preventDefault();
+
+    if (commissionSubmitting)
+    {
+
+        return;
+
+    }
 
     const firstInvalid = validateCommissionForm();
 
@@ -818,48 +1063,347 @@ function submitCommissionForm(event)
 
     }
 
-    const name = document.querySelector('#visitorName').value.trim();
+    const fields = readCommissionFields();
 
-    const email = document.querySelector('#visitorEmail').value.trim();
-
-    const surface = pieceSurfaceField.value;
-
-    const idea = pieceIdeaField.value.trim();
-
-    const occasion = document.querySelector('#pieceOccasion').value.trim();
-
-    const referenced = findPiece(referencedPieceId);
-
-    const subject = referenced
-        ? 'Enquiry about \u201c' + referenced.subject + '\u201d'
-        : 'Custom piece enquiry \u2014 ' + surface;
-
-    const bodyLines = [
-        'Name: ' + name,
-        'Email: ' + email,
-        'Surface: ' + surface,
-        occasion ? 'Occasion: ' + occasion : null,
-        referenced ? 'Piece I was looking at: ' + referenced.subject + ' (' + referenced.surface + ')' : null,
-        '',
-        idea
-    ].filter(function (line)
+    if (!isOfferEndpointConfigured())
     {
 
-        return line !== null;
+        handOffCommissionByMail(fields);
 
-    });
+        return;
 
-    const mailtoUrl = 'mailto:' + STUDIO_EMAIL
-        + '?subject=' + encodeURIComponent(subject)
-        + '&body=' + encodeURIComponent(bodyLines.join('\n'));
+    }
 
-    formStatus.classList.add('isSent');
+    setCommissionSubmittingState(true);
 
-    formStatus.textContent = 'Your email app should be opening with this message ready to send. '
-        + 'If nothing opens, please write to ' + STUDIO_EMAIL + ' and paste it in \u2014 '
-        + 'nothing has been sent from this page yet.';
+    formStatus.classList.remove('isSent');
 
-    window.location.href = mailtoUrl;
+    formStatus.textContent = 'Sending your idea to ' + ARTIST_NAME + '\u2026';
+
+    const abortController = new AbortController();
+
+    const timeoutHandle = window.setTimeout(
+        function ()
+        {
+
+            abortController.abort();
+
+        },
+        paddleCreekConfig.offerRequestTimeout
+    );
+
+    try
+    {
+
+        /* text/plain keeps the request CORS-simple for Apps Script. */
+
+        const response = await fetch(paddleCreekConfig.offerEndpointUrl, {
+
+            method: 'POST',
+
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+
+            body: JSON.stringify({
+
+                submissionType: 'commissionInquiry',
+
+                visitorName: fields.name,
+
+                visitorEmail: fields.email,
+
+                pieceSurface: fields.surface,
+
+                pieceIdea: fields.idea,
+
+                pieceOccasion: fields.occasion,
+
+                referencedPiece: fields.referencedPiece,
+
+                honeypot: document.querySelector('#commissionCompany').value,
+
+                source: 'fairCommission'
+
+            }),
+
+            signal: abortController.signal
+
+        });
+
+        const result = await response.json();
+
+        if (result.success)
+        {
+
+            commissionForm.reset();
+
+            clearPieceReference();
+
+            formStatus.classList.add('isSent');
+
+            formStatus.textContent = result.message
+                || ('Thank you \u2014 your inquiry is with ' + ARTIST_NAME
+                    + ', and a copy is on its way to your inbox.');
+
+            trackConversionEvent('commissionInquiry');
+
+        }
+        else
+        {
+
+            const serverMessage = (result.errors && result.errors.length)
+                ? result.errors[0]
+                : (result.message || 'Your idea could not be sent.');
+
+            formStatus.classList.remove('isSent');
+
+            formStatus.textContent = serverMessage + ' Please try again.';
+
+        }
+
+    }
+    catch (commissionError)
+    {
+
+        formStatus.classList.remove('isSent');
+
+        formStatus.textContent = 'Your idea could not be sent just now. Please check your '
+            + 'connection and try again, or write to ' + STUDIO_EMAIL + '.';
+
+    }
+    finally
+    {
+
+        window.clearTimeout(timeoutHandle);
+
+        setCommissionSubmittingState(false);
+
+    }
+
+}
+
+
+/* ============================================================
+   TEN PERCENT OFFER
+
+   One field, one job. The email address goes to a Google Apps
+   Script Web App, which records the signup in a Google Sheet
+   and emails the discount code back.
+
+   The code itself is never held on this page. It is assigned on
+   the server and only ever appears in the confirmation email —
+   so the page cannot hand it out to someone who never gave an
+   address, and the code can be changed later without touching
+   the site.
+
+   The endpoint URL lives in paddleCreekConfig at the top of
+   this file. Until it is filled in, the form says so plainly
+   rather than pretending the signup was received.
+============================================================ */
+
+function isOfferEndpointConfigured()
+{
+
+    return paddleCreekConfig.offerEndpointUrl.indexOf('http') === 0;
+
+}
+
+
+function setOfferStatus(message, isSent)
+{
+
+    if (!offerStatus)
+    {
+
+        return;
+
+    }
+
+    offerStatus.classList.toggle('isSent', Boolean(isSent));
+
+    offerStatus.textContent = message;
+
+}
+
+
+function setOfferSubmittingState(isSubmitting)
+{
+
+    offerSubmitting = isSubmitting;
+
+    const submitButton = offerForm.querySelector('.offerSubmit');
+
+    if (submitButton)
+    {
+
+        submitButton.disabled = isSubmitting;
+
+        submitButton.textContent = isSubmitting ? 'Sending…' : 'Claim My 10% Off';
+
+    }
+
+}
+
+
+async function submitOfferForm(event)
+{
+
+    event.preventDefault();
+
+    if (offerSubmitting)
+    {
+
+        return;
+
+    }
+
+    const email = offerEmailField.value.trim();
+
+    if (!isEmailShaped(email))
+    {
+
+        setFieldError(
+            offerEmailField,
+            'I need an email address to send the code to — please check this one.'
+        );
+
+        setOfferStatus('', false);
+
+        offerEmailField.focus();
+
+        return;
+
+    }
+
+    setFieldError(offerEmailField, '');
+
+    /* Tapping the button twice should not send a second request
+       for an address that has already gone through. */
+
+    if (email.toLowerCase() === lastOfferEmailSent)
+    {
+
+        setOfferStatus(
+            'Your code is already on its way to ' + email
+            + '. Check your inbox, and your spam folder just in case.',
+            true
+        );
+
+        return;
+
+    }
+
+    if (!isOfferEndpointConfigured())
+    {
+
+        setOfferStatus(
+            'The discount signup is not connected yet. Please write to ' + STUDIO_EMAIL
+            + ' and I will send your code by hand — nothing has been sent from this page.',
+            false
+        );
+
+        return;
+
+    }
+
+    setOfferSubmittingState(true);
+
+    setOfferStatus('Sending your code…', false);
+
+    const abortController = new AbortController();
+
+    const timeoutHandle = window.setTimeout(
+        function ()
+        {
+
+            abortController.abort();
+
+        },
+        paddleCreekConfig.offerRequestTimeout
+    );
+
+    try
+    {
+
+        /* text/plain keeps the request CORS-simple for Apps Script. */
+
+        const response = await fetch(paddleCreekConfig.offerEndpointUrl, {
+
+            method: 'POST',
+
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+
+            body: JSON.stringify({
+
+                submissionType: 'discountSignup',
+
+                email: email,
+
+                honeypot: document.querySelector('#offerCompany').value,
+
+                source: 'fairOffer'
+
+            }),
+
+            signal: abortController.signal
+
+        });
+
+        const result = await response.json();
+
+        if (result.success)
+        {
+
+            lastOfferEmailSent = email.toLowerCase();
+
+            offerForm.reset();
+
+            /* The code itself is never printed here. The page only ever
+               says an email is coming — PADDLE10 exists in the inbox and
+               nowhere else, which is what stops the offer being lifted off
+               the screen by someone who never left an address. */
+
+            setOfferStatus(
+                result.emailSent
+                    ? 'You’re in! Check your email. Your 10% discount code is on '
+                        + 'its way. Look for an email from Paddle Creek Paints.'
+                    : (result.message || 'You are on the list. If the email does not '
+                        + 'arrive, write to ' + STUDIO_EMAIL + '.'),
+                true
+            );
+
+            trackConversionEvent('discountSignup');
+
+        }
+        else
+        {
+
+            const serverMessage = (result.errors && result.errors.length)
+                ? result.errors[0]
+                : (result.message || 'Your code could not be sent.');
+
+            setOfferStatus(serverMessage + ' Please try again.', false);
+
+        }
+
+    }
+    catch (offerError)
+    {
+
+        setOfferStatus(
+            'Your code could not be sent just now. Please check your connection and try '
+            + 'again, or write to ' + STUDIO_EMAIL + '.',
+            false
+        );
+
+    }
+    finally
+    {
+
+        window.clearTimeout(timeoutHandle);
+
+        setOfferSubmittingState(false);
+
+    }
 
 }
 
@@ -874,6 +1418,16 @@ if (menuToggle)
     menuToggle.addEventListener(
         'click',
         toggleMobileMenu
+    );
+
+}
+
+if (heroVideoPlayButton)
+{
+
+    heroVideoPlayButton.addEventListener(
+        'click',
+        playHeroVideo
     );
 
 }
@@ -937,6 +1491,18 @@ document.addEventListener(
 
         }
 
+        /* The open panel covers the viewport, so the tab ring is held inside
+           the header — which is where the X lives, and the only way out. */
+
+        if (menuOpen && event.key === 'Tab' && headerInner)
+        {
+
+            trapFocus(headerInner, event);
+
+            return;
+
+        }
+
         if (event.key !== 'Escape')
         {
 
@@ -950,6 +1516,24 @@ document.addEventListener(
             closeMobileMenu();
 
             menuToggle.focus();
+
+        }
+
+    }
+);
+
+/* Rotating a phone, or resizing into the desktop layout, must not leave the
+   full-screen panel and its scroll lock behind. */
+
+window.addEventListener(
+    'resize',
+    function ()
+    {
+
+        if (menuOpen && window.innerWidth > 880)
+        {
+
+            closeMobileMenu();
 
         }
 
@@ -1076,6 +1660,31 @@ if (commissionForm)
         );
 
     });
+
+}
+
+if (offerForm)
+{
+
+    offerForm.addEventListener(
+        'submit',
+        submitOfferForm
+    );
+
+    offerEmailField.addEventListener(
+        'input',
+        function ()
+        {
+
+            if (offerEmailField.closest('.formField').classList.contains('hasError'))
+            {
+
+                setFieldError(offerEmailField, '');
+
+            }
+
+        }
+    );
 
 }
 

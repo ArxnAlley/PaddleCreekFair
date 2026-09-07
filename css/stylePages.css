@@ -10,22 +10,39 @@
    VENDOR FAIR — built for a phone at the table
 ============================================================ */
 
-/* The announcement band is a real painted brush stroke, not a CSS shape. The
-   complete image is shown at its natural aspect ratio — no cropping, no
-   stretching — inset within the viewport so the painted ends and a sliver of
-   cream page background are both visible. .fairBarBrushWrap centers the
-   stroke and gives it a legibility floor for narrow phones (where the image
-   alone would render too short for two lines of text); the image is always
-   vertically centered within that box, so .fairBarInner — which shares that
-   same centering — lands on the stroke's solid, symmetric middle band rather
-   than its frayed top or bottom edge. */
+/* The announcement band is a real painted brush stroke, not a CSS shape.
+   Never cropped horizontally: the bristled left and right ends stay whole at
+   every width, with a sliver of cream page background either side.
+
+   The one measurement everything here is built on: in the PNG (3200 × 300),
+   the stroke is only fully opaque across the text's horizontal span between
+   y49 and y237 — the **middle 63% of the rendered image height**, centred at
+   47.7%. Above and below that is frayed, semi-transparent bristle. Text
+   placed outside that band sits on cream, not green, and becomes unreadable.
+   Both treatments below exist to keep the announcement inside that 63%.
+
+   Desktop (> 1024px) — the event and the time sit on ONE centred line, so
+   the band only has to clear a single line of type. The stroke is therefore
+   flattened from its natural 32:3 to 41:3, about 22% less vertical presence,
+   which removes the dead green that used to sit above and below the text.
+   Flattening (rather than narrowing) is what preserves the painted ends and
+   the cream side margins unchanged.
+
+   Mobile (≤ 1024px) — the announcement is deliberately TWO centred lines,
+   and at phone widths the natural stroke renders far too short to hold them
+   (≈35px of image, ≈22px of band, against ≈42px of text). So the
+   relationship inverts: .fairBarInner becomes the in-flow element that sizes
+   the wrap, and the stroke is stretched behind it to fill. The brush is then
+   always exactly as tall as the words need, at every width, with no
+   per-breakpoint height table to maintain. Its vertical padding is what
+   holds both lines inside the 63% band. */
 
 .fairBar
 {
 
     position: relative;
 
-    padding: clamp(0.9rem, 2vw, 1.3rem) 0;
+    padding: clamp(0.6rem, 1.4vw, 0.95rem) 0;
 
 }
 
@@ -40,11 +57,13 @@
 
     justify-content: center;
 
-    width: 95vw;
+    width: 92vw;
 
-    min-height: clamp(3.5rem, 9vw, 4.75rem);
+    min-height: 2.75rem;
 
     margin: 0 auto;
+
+    overflow: hidden;
 
 }
 
@@ -56,6 +75,14 @@
     width: 100%;
 
     height: auto;
+
+    /* The PNG's own ratio is 32/3. Flattening it to 41/3 takes ~22% off the
+       rendered height without touching the width, so the painted ends and the
+       cream side margins are exactly where they were. */
+
+    aspect-ratio: 41 / 3;
+
+    object-fit: fill;
 
     pointer-events: none;
 
@@ -74,13 +101,13 @@
 
     display: flex;
 
-    flex-wrap: wrap;
+    flex-direction: row;
 
     align-items: center;
 
     justify-content: center;
 
-    gap: 0.2rem 1rem;
+    gap: clamp(0.75rem, 1.7vw, 1.5rem);
 
     padding: 0 9%;
 
@@ -93,11 +120,13 @@
 
     font-family: var(--fontDisplay);
 
-    font-size: 1.1rem;
+    font-size: clamp(0.78rem, 3.6vw, 1.15rem);
 
-    line-height: 1.2;
+    line-height: 1.15;
 
     color: var(--inkOnDark);
+
+    white-space: nowrap;
 
 }
 
@@ -106,13 +135,17 @@
 
     font-family: var(--fontDisplay);
 
-    font-size: var(--stepLabel);
+    font-size: clamp(0.95rem, 4.6vw, 1.5rem);
+
+    line-height: 1.15;
 
     color: var(--blush);
 
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em;
 
     text-transform: uppercase;
+
+    white-space: nowrap;
 
 }
 
@@ -196,6 +229,25 @@
 
 }
 
+/* ── The two ways in ──
+   Both paths sit together above the catalogue. They are not a
+   primary/secondary pair in importance — one is "ask now", the other is
+   "keep in touch" — but the painted button and its lighter twin already
+   read as a matched set in this system, so no new treatment is invented. */
+
+.fairHeroActions
+{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 0.85rem;
+
+}
+
 .fairHeroWords .fairAction
 {
 
@@ -203,12 +255,21 @@
 
 }
 
-.heroVideoPlaceholder
+.heroVideoCard
 {
 
     margin: 0;
 
-    padding: 0.6rem 0.6rem 1rem;
+    /* Same footprint as .heroVideoFrame's old landscape placeholder cap
+       so the real, portrait-shaped video can't balloon the hero row —
+       a phone-shot selfie video reads as intentional at phone width,
+       not stretched to fill a column sized for a landscape clip. */
+
+    max-width: 19rem;
+
+    margin-inline: auto;
+
+    padding: 0.6rem 0.6rem 0;
 
     background-color: var(--wallHigh);
 
@@ -220,32 +281,79 @@
 
 }
 
+.heroVideoStage
+{
+
+    position: relative;
+
+}
+
 .heroVideoFrame
 {
 
-    display: flex;
+    /* Matches the encoded file's real 720x1280 pixel ratio (9/16) —
+       Mary's footage is a vertical phone recording, so the frame is
+       shaped to it rather than cropping it into a landscape box.
+       artistPhoto.png (941x1672, ratio 0.5628) is close enough to that
+       same 9/16 (0.5625) that object-fit: cover crops next to nothing
+       of it either, before playback ever starts. */
 
-    flex-direction: column;
+    display: block;
 
-    align-items: center;
+    width: 100%;
 
-    justify-content: center;
+    height: auto;
 
-    gap: 0.7rem;
+    aspect-ratio: 9 / 16;
 
-    aspect-ratio: 16 / 10;
+    object-fit: cover;
 
     background-color: var(--wallBase);
-
-    background-image: var(--grain);
-
-    background-size: 180px 180px;
 
     border-radius: 1px;
 
 }
 
-.heroVideoIcon
+/* The button covers the whole frame — a generous, forgiving tap target,
+   not just the small visible circle — and sits above the video only
+   until playback begins. Its own background stays transparent so the
+   poster (artistPhoto) shows through underneath, unobstructed. */
+
+.heroVideoPlayButton
+{
+
+    position: absolute;
+
+    inset: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    width: 100%;
+
+    height: 100%;
+
+    padding: 0;
+
+    background-color: transparent;
+
+    border: 0;
+
+    border-radius: 1px;
+
+    cursor: pointer;
+
+}
+
+.heroVideoPlayButton[hidden]
+{
+
+    display: none;
+
+}
+
+.heroVideoPlayIcon
 {
 
     display: grid;
@@ -264,9 +372,19 @@
 
     box-shadow: var(--shadowLedge);
 
+    transition: transform 180ms var(--ease);
+
 }
 
-.heroVideoIcon svg
+.heroVideoPlayButton:hover .heroVideoPlayIcon,
+.heroVideoPlayButton:focus-visible .heroVideoPlayIcon
+{
+
+    transform: scale(1.08);
+
+}
+
+.heroVideoPlayIcon svg
 {
 
     width: 1.3rem;
@@ -278,6 +396,10 @@
 .heroVideoLabel
 {
 
+    display: block;
+
+    padding: 0.7rem 0 0.85rem;
+
     font-family: var(--fontScript);
 
     font-size: 1.5rem;
@@ -286,10 +408,58 @@
 
     color: var(--roseInk);
 
+    text-align: center;
+
 }
 
-.heroVideoNote
+
+/* ============================================================
+   OFFER — 10% off the first custom piece
+
+   Sits between the sage About wall and the cream commission
+   section, so it stays on the cream wall and reads as part of
+   the same room rather than a banner dropped on top of it.
+
+   The two paths are deliberately the same weight: one is not a
+   lesser version of the other. They are two cards on the same
+   shelf, sharing the commission form's card treatment so the
+   whole lower half of the page feels like one surface.
+============================================================ */
+
+.offerSection
 {
+
+    padding: 0 0 var(--sectionPad);
+
+}
+
+.offerInner
+{
+
+    max-width: var(--shellMax);
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.offerWords
+{
+
+    max-width: 46ch;
+
+    margin-bottom: clamp(1.8rem, 3.4vw, 2.6rem);
+
+}
+
+/* ── The eyebrow: the same small caps label used on the piece
+      tickets and the placeholder notes ── */
+
+.offerEyebrow
+{
+
+    margin-bottom: 0.9rem;
 
     font-family: var(--fontDisplay);
 
@@ -303,71 +473,157 @@
 
 }
 
+.offerHeading
+{
 
-/* ============================================================
-   ABOUT — portrait placeholder
-============================================================ */
+    margin-bottom: 0.9rem;
 
-.aboutPortraitPlaceholder
+}
+
+
+/* ── The two paths ── */
+
+.offerPaths
+{
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    align-items: start;
+
+    gap: clamp(1.2rem, 2.6vw, 2rem);
+
+}
+
+.offerPath
 {
 
     display: flex;
 
     flex-direction: column;
 
-    align-items: center;
+    gap: 0.9rem;
 
-    justify-content: center;
+    height: 100%;
 
-    gap: 0.6rem;
+    padding: clamp(1.5rem, 2.8vw, 2.3rem);
 
-    width: 100%;
+    background-color: rgba(251, 243, 236, 0.72);
 
-    aspect-ratio: 1 / 1;
+    border: 1px solid rgba(157, 112, 100, 0.24);
 
-    background-color: var(--wallBase);
+    border-radius: 2px;
 
-    background-image: var(--grain);
-
-    background-size: 180px 180px;
-
-    border: 1px dashed rgba(var(--ruleInk), 0.35);
-
-    border-radius: 1px;
+    box-shadow: var(--shadowLedge);
 
 }
 
-.aboutPortraitIcon
+/* The claim card carries the one action on the page that leaves
+   the site, so it gets the blush wash to set it apart without
+   raising it onto a different rung of the depth ladder. */
+
+.offerPathClaim
 {
 
-    width: 2.6rem;
-
-    height: 2.6rem;
-
-    fill: none;
-
-    stroke: var(--inkSoft);
-
-    stroke-width: 1.3;
-
-    stroke-linecap: round;
-
-    stroke-linejoin: round;
+    background-color: rgba(246, 221, 214, 0.46);
 
 }
 
-.aboutPortraitNote
+.offerPathHeading
 {
 
     font-family: var(--fontDisplay);
 
-    font-size: var(--stepLabel);
+    font-size: var(--stepSub);
 
-    color: var(--inkSoft);
+    line-height: 1.25;
 
-    letter-spacing: 0.16em;
+    color: var(--inkDeep);
 
-    text-transform: uppercase;
+}
+
+.offerPathNote
+{
+
+    margin: 0;
+
+    font-size: var(--stepBody);
+
+    line-height: 1.55;
+
+    color: var(--inkBody);
+
+}
+
+/* Both actions sit on the bottom edge of their card, so the two
+   buttons line up however unevenly the copy above them wraps. */
+
+.offerPathAction
+{
+
+    align-self: start;
+
+    margin-top: auto;
+
+}
+
+
+/* ── The claim form ── */
+
+.offerForm
+{
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1rem;
+
+    margin-top: auto;
+
+}
+
+.offerSubmit
+{
+
+    align-self: start;
+
+}
+
+.offerSubmit:disabled
+{
+
+    cursor: progress;
+
+    opacity: 0.62;
+
+}
+
+/* The spam trap, and the reason the claim card still counts as a
+   one-field form: this is moved right off the canvas rather than
+   hidden with display:none, which the crawlers worth trapping
+   check for. Nothing here is visible, focusable or clickable —
+   the input itself is moved, not just its wrapper, so it has no
+   on-screen box of its own. */
+
+.formTrap,
+.formTrap input
+{
+
+    position: absolute;
+
+    left: -9999px;
+
+    width: 1px;
+
+    height: 1px;
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    pointer-events: none;
 
 }
 
@@ -375,10 +631,63 @@
 @media (max-width: 1024px)
 {
 
+    /* ── The announcement, rebuilt for a phone ──
+       The stroke stops driving the height and starts following it. See the
+       long note at the top of this file for the 63%-band measurement all of
+       these numbers come from. */
+
+    .fairBar
+    {
+
+        /* Clear cream between the sticky cream header and the now much
+           heavier green stroke, so the two never read as one block. */
+
+        padding: clamp(1rem, 3.4vw, 1.4rem) 0;
+
+    }
+
     .fairBarBrushWrap
     {
 
-        width: 97vw;
+        width: 95vw;
+
+        min-height: 0;
+
+    }
+
+    .fairBarBrushImage
+    {
+
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+
+        height: 100%;
+
+        aspect-ratio: auto;
+
+        object-fit: fill;
+
+    }
+
+    .fairBarInner
+    {
+
+        position: relative;
+
+        inset: auto;
+
+        flex-direction: column;
+
+        gap: 0.35rem;
+
+        /* This padding is the whole mechanism: it is what keeps both lines
+           inside the stroke's opaque middle 63%. Anything below ~0.36 × the
+           text block's own height puts the time line back on the cream. */
+
+        padding: clamp(1.15rem, 4.6vw, 1.55rem) 9%;
 
     }
 
@@ -395,6 +704,18 @@
     {
 
         max-width: 28rem;
+
+    }
+
+    /* Two cards side by side stop earning their keep once each
+       one is narrower than its own copy, so they stack. */
+
+    .offerPaths
+    {
+
+        grid-template-columns: minmax(0, 1fr);
+
+        max-width: 34rem;
 
     }
 
@@ -424,6 +745,251 @@
         gap: 0.9rem;
 
         row-gap: 1.6rem;
+
+    }
+
+    /* Same reasoning as .fairAction above: read one-handed at the
+       table, so both offer actions become full-width tap targets. */
+
+    .offerPathAction,
+    .offerSubmit
+    {
+
+        display: flex;
+
+        align-self: stretch;
+
+        width: 100%;
+
+        padding-block: 1.1rem;
+
+    }
+
+}
+
+
+/* ============================================================
+   OFFER FORM — marketing consent disclosure
+
+   The one thing the discount form actually asks for in exchange for a
+   visible field: agreement to receive occasional marketing email as well
+   as the discount itself. Sits directly beneath the CTA — visible before
+   anyone submits, never buried only inside the Privacy Policy — but stays
+   fine print: smaller and quieter than the surrounding copy so it does not
+   compete with the button for attention.
+============================================================ */
+
+.formDisclosure
+{
+
+    margin: 0;
+
+    font-size: 0.78rem;
+
+    line-height: 1.55;
+
+    color: var(--inkSoft);
+
+}
+
+.formDisclosure .linkPainted
+{
+
+    white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   LEGAL PAGES — Privacy Policy / Terms of Use / Do Not Sell
+
+   One shared, lightweight article layout for all three standalone legal
+   pages. Same header, same footer, same cream ground and serif body type
+   as the rest of the site — these are meant to read as part of Paddle
+   Creek Paints, not a bolted-on generic legal template.
+============================================================ */
+
+.legalSection
+{
+
+    padding: clamp(2.6rem, 5vw, 4rem) 0 var(--sectionPad);
+
+}
+
+.legalInner
+{
+
+    max-width: 46rem;
+
+    margin: 0 auto;
+
+    padding: 0 var(--gutter);
+
+}
+
+.legalBackLink
+{
+
+    display: inline-block;
+
+    margin-bottom: 1.8rem;
+
+    font-size: 0.85rem;
+
+}
+
+.legalEyebrow
+{
+
+    margin-bottom: 0.9rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepLabel);
+
+    color: var(--inkSoft);
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+
+}
+
+.legalHeading
+{
+
+    max-width: 22ch;
+
+    margin-bottom: 0.6rem;
+
+}
+
+.legalUpdated
+{
+
+    margin-bottom: 2.2rem;
+
+    font-size: 0.9rem;
+
+    font-style: italic;
+
+    color: var(--inkSoft);
+}
+
+.legalArticle
+{
+
+    max-width: 68ch;
+
+}
+
+.legalArticle > * + *
+{
+
+    margin-top: 1.15rem;
+
+}
+
+.legalArticle h2
+{
+
+    margin-top: 2.4rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepSubhead);
+
+    color: var(--inkDeep);
+
+}
+
+.legalArticle h2:first-child
+{
+
+    margin-top: 0;
+
+}
+
+.legalArticle h3
+{
+
+    margin-top: 1.8rem;
+
+    font-family: var(--fontDisplay);
+
+    font-size: var(--stepSub);
+
+    color: var(--inkDeep);
+
+}
+
+.legalArticle p,
+.legalArticle li
+{
+
+    color: var(--inkBody);
+
+}
+
+.legalArticle ul
+{
+
+    list-style: disc;
+
+    padding-left: 1.4rem;
+
+}
+
+.legalArticle li + li
+{
+
+    margin-top: 0.5rem;
+
+}
+
+.legalArticle strong
+{
+
+    color: var(--inkDeep);
+
+}
+
+.legalArticle .linkPainted
+{
+
+    white-space: normal;
+
+}
+
+.legalNote
+{
+
+    margin-top: 2.6rem;
+
+    padding: 1.1rem 1.3rem;
+
+    font-size: 0.88rem;
+
+    line-height: 1.55;
+
+    color: var(--inkSoft);
+
+    background-color: rgba(163, 164, 143, 0.16);
+
+    border-left: 1px solid var(--sage);
+
+}
+
+
+@media (max-width: 720px)
+{
+
+    .legalHeading
+    {
+
+        max-width: none;
+
+        font-size: var(--stepHeading);
 
     }
 

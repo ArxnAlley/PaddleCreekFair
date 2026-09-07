@@ -1796,11 +1796,13 @@ em.scriptLine
 
     width: 100%;
 
-    aspect-ratio: 1 / 1;
+    /* Matches artistPhoto.png's real 941x1672 pixel ratio, so cover has
+       nothing to crop — the whole source photograph renders, edge to
+       edge, instead of a windowed slice of it. */
+
+    aspect-ratio: 941 / 1672;
 
     object-fit: cover;
-
-    object-position: 50% 42%;
 
 }
 
@@ -2681,6 +2683,8 @@ em.scriptLine
 
     color: var(--inkSoftOnSage);
 
+    white-space: nowrap;
+
 }
 
 .footerScript
@@ -2695,6 +2699,62 @@ em.scriptLine
     color: var(--blush);
 
     text-align: right;
+
+}
+
+/* Sits inside .footerInner, beneath the brand/nav/signature columns and
+   above .footerLegal's divider — legal links and the analytics notice are
+   secondary to the primary footer nav, but still part of the "content"
+   footer, not the closing attribution strip below the line. */
+
+.footerLegalArea
+{
+
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 0.5rem;
+
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+
+}
+
+.footerAnalyticsNotice
+{
+
+    max-width: 46rem;
+
+    font-size: 0.82rem;
+
+    line-height: 1.5;
+
+    color: var(--sageFaint);
+
+}
+
+.footerAnalyticsNotice a
+{
+
+    color: var(--sageFaint);
+
+    text-decoration: underline;
+
+    text-decoration-color: rgba(247, 237, 228, 0.35);
+
+    transition: color 180ms var(--ease);
+
+}
+
+.footerAnalyticsNotice a:hover,
+.footerAnalyticsNotice a:focus-visible
+{
+
+    color: var(--inkOnDark);
+
+    text-decoration-color: var(--rose);
 
 }
 
@@ -2730,6 +2790,44 @@ em.scriptLine
     line-height: 1.5;
 
     color: var(--sageFaint);
+
+}
+
+.footerLegalLinks
+{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.4rem 1.2rem;
+
+    font-size: 0.82rem;
+
+    line-height: 1.5;
+
+}
+
+.footerLegalLinks a
+{
+
+    color: var(--sageFaint);
+
+    text-decoration: none;
+
+    transition: color 180ms var(--ease);
+
+}
+
+.footerLegalLinks a:hover,
+.footerLegalLinks a:focus-visible
+{
+
+    color: var(--inkOnDark);
+
+    text-decoration: underline;
+
+    text-decoration-color: var(--rose);
 
 }
 
@@ -3003,6 +3101,19 @@ body.isViewerOpen
 
 }
 
+/* The full-screen mobile menu locks the page the same way the piece viewer
+   does. overflow:hidden is deliberate over the position:fixed technique —
+   it holds the scroll position rather than resetting it, so closing the menu
+   (or following an in-page anchor out of it) lands exactly where it should
+   with nothing to restore. */
+
+body.isNavOpen
+{
+
+    overflow: hidden;
+
+}
+
 
 /* ============================================================
    MEDIA QUERIES — tablet
@@ -3264,6 +3375,45 @@ body.isViewerOpen
 
     }
 
+    /* ── The full-screen menu ──
+
+       The panel is position:fixed and must resolve against the viewport, not
+       against the header. What used to trap it was NOT the sticky header —
+       verified in Chrome — it was the header's own backdrop-filter, which
+       makes any element a containing block for its fixed descendants. So the
+       blur is dropped for exactly as long as the menu is open; the panel's
+       own cream fills the header strip in its place, which is why the
+       background can go transparent rather than being restated here. */
+
+    .siteHeader.navOpen
+    {
+
+        background-color: transparent;
+
+        -webkit-backdrop-filter: none;
+
+        backdrop-filter: none;
+
+        box-shadow: none;
+
+    }
+
+    /* The mark and the toggle are siblings of the panel inside .headerInner,
+       so a stacking order is all it takes to keep both sitting on top of the
+       open menu. The toggle never moves between states — it is the same
+       button in the same place, and only the three bars inside it animate
+       into the X. */
+
+    .brandLockup,
+    .menuToggle
+    {
+
+        position: relative;
+
+        z-index: 60;
+
+    }
+
     .primaryNav
     {
 
@@ -3271,25 +3421,31 @@ body.isViewerOpen
 
         top: 0;
 
+        left: 0;
+
         right: 0;
 
-        bottom: 0;
+        z-index: 45;
 
-        z-index: 50;
+        height: 100vh;
+
+        height: 100dvh;
 
         flex-direction: column;
 
-        align-items: flex-start;
+        align-items: stretch;
 
-        justify-content: center;
+        justify-content: flex-start;
 
-        gap: 2rem;
+        gap: 0;
 
-        width: min(21rem, 86vw);
+        /* Clears the header so the first link never hides behind the mark. */
 
-        padding: 2rem;
+        padding: clamp(7rem, 18vw, 9rem) var(--gutter) 3rem;
 
         overflow-y: auto;
+
+        overscroll-behavior: contain;
 
         background-color: var(--wallBase);
 
@@ -3297,28 +3453,39 @@ body.isViewerOpen
 
         background-size: 180px 180px;
 
-        box-shadow: -18px 0 50px rgba(var(--shadowInk), 0.28);
+        /* Drawn down out of the top of the viewport, not in from the side. */
 
-        transform: translateX(100%);
+        transform: translateY(-100%);
 
         visibility: hidden;
 
         pointer-events: none;
 
+        /* visibility is a discrete property: left to transition normally it
+           flips at the halfway point, which would leave the panel unfocusable
+           for the first half of the opening slide. Stepping it at 0s on the
+           way in (and holding it until the slide finishes on the way out)
+           means the panel is focusable the instant it starts opening, and
+           still animates all the way closed. */
+
         transition:
-            transform 380ms var(--ease),
-            visibility 380ms var(--ease);
+            transform 420ms var(--ease),
+            visibility 0s linear 420ms;
 
     }
 
     .primaryNav.isOpen
     {
 
-        transform: translateX(0);
+        transform: translateY(0);
 
         visibility: visible;
 
         pointer-events: auto;
+
+        transition:
+            transform 420ms var(--ease),
+            visibility 0s linear 0s;
 
     }
 
@@ -3327,9 +3494,9 @@ body.isViewerOpen
 
         flex-direction: column;
 
-        align-items: flex-start;
+        align-items: stretch;
 
-        gap: 1.35rem;
+        gap: 0;
 
         width: 100%;
 
@@ -3340,21 +3507,45 @@ body.isViewerOpen
 
         width: 100%;
 
+        border-bottom: 1px solid rgba(var(--ruleInk), 0.18);
+
     }
 
     .primaryNavList a
     {
 
-        font-size: 1.32rem;
+        display: flex;
+
+        align-items: center;
+
+        min-height: 3.5rem;
+
+        padding: 0.9rem 0;
+
+        font-size: 1.5rem;
+
+        color: var(--inkDeep);
 
         letter-spacing: 0.02em;
+
+        white-space: normal;
 
     }
 
     .navAction
     {
 
-        font-size: 0.86rem;
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-height: 3.5rem;
+
+        margin-top: 2.25rem;
+
+        font-size: 0.95rem;
 
     }
 
@@ -4925,7 +5116,7 @@ body.isViewerOpen
 .devCreditLabel
 {
 
-    font-size: 0.82rem;
+    font-size: 1.05rem;
 
     line-height: 1.5;
 
@@ -4940,7 +5131,7 @@ body.isViewerOpen
 
     width: auto;
 
-    height: 2.1rem;
+    height: 4.375rem;
 
     object-fit: contain;
 

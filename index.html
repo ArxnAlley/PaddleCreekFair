@@ -14,11 +14,10 @@
     >
 
     <!--
-        TODO — OWNER: the canonical host below is inferred from the supplied
-        contact address (hello@paddlecreekpaints.com). Change SITE in one place
-        here and in sitemap.xml if the live domain differs.
+        The site is deployed as the root document at paddlecreekpaints.com, not
+        as /fair.html — the canonical URL is the root and must stay that way.
     -->
-    <link rel="canonical" href="https://paddlecreekpaints.com/fair.html">
+    <link rel="canonical" href="https://paddlecreekpaints.com/">
 
     <meta name="theme-color" content="#f1e2d3">
 
@@ -27,8 +26,17 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Paddle Creek Paints at the Catlettsburg Labor Day Celebration">
     <meta property="og:description" content="Browse the Paddle Creek Paints catalogue of hand-painted cast iron, wood, denim and canvas, and ask about a custom piece from the Catlettsburg Labor Day Celebration.">
-    <meta property="og:url" content="https://paddlecreekpaints.com/fair.html">
-    <meta property="og:image" content="https://paddlecreekpaints.com/images/logos/ogImage.jpg">
+    <meta property="og:url" content="https://paddlecreekpaints.com/">
+
+    <!--
+        The shared preview image is the square studio logo already published
+        with the site (1200 × 1200). It replaces an ogImage.jpg that was never
+        added to the repo and returned a 404 on every share.
+    -->
+    <meta property="og:image" content="https://paddlecreekpaints.com/images/logos/PaddleCreekPaints_logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="1200">
+    <meta property="og:image:alt" content="The Paddle Creek Paints logo.">
     <meta property="og:locale" content="en_US">
 
     <meta name="twitter:card" content="summary_large_image">
@@ -175,36 +183,74 @@
                     with the piece you were looking at attached.
                 </p>
 
-                <a class="buttonPainted fairAction" href="#startAPiece">Start a piece</a>
+                <!--
+                    Both ways in, side by side, before the visitor starts browsing.
+                    Someone arriving from the QR code at the table sees immediately
+                    that they can either ask about a piece now, or take the 10% and
+                    come back to it later.
+                -->
+
+                <div class="fairHeroActions">
+
+                    <a class="buttonPainted fairAction" href="#startAPiece">Start a piece</a>
+
+                    <a class="buttonPainted buttonPaintedLight fairAction" href="#tenOffOffer">Claim My 10% Off</a>
+
+                </div>
 
             </div>
 
             <div class="fairHeroMedia">
 
                 <!--
-                    TODO — OWNER: no introduction video has been supplied yet. Replace this
-                    placeholder with a real embed or self-hosted video (autoplay is intentionally
-                    not used) once footage of Mary exists.
+                    Real footage of Mary, introducing herself. Self-hosted MP4 derived from
+                    graphics/videos/ArtistIntroVideo.MOV (the untouched original). The cover is
+                    the real artistPhoto — the same portrait used in the About section — so the
+                    initial state is never a random extracted video frame. No autoplay: the play
+                    button is the only way playback starts, and that click is what lets
+                    preload="none" keep the video itself unfetched until then, on a QR-code
+                    visitor's cellular connection.
                 -->
 
-                <figure class="heroVideoPlaceholder">
+                <figure class="heroVideoCard">
 
-                    <div class="heroVideoFrame">
+                    <div class="heroVideoStage">
 
-                        <span class="heroVideoIcon" aria-hidden="true">
+                        <video
+                            id="heroVideo"
+                            class="heroVideoFrame"
+                            poster="graphics/images/artistPhoto.png"
+                            controls
+                            playsinline
+                            preload="none"
+                            tabindex="-1"
+                            width="720"
+                            height="1280"
+                        >
 
-                            <svg viewBox="0 0 24 24" focusable="false">
-                                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.4" />
-                                <path d="M10 8.3 16.5 12 10 15.7Z" fill="currentColor" />
-                            </svg>
+                            <source src="images/videos/artistIntroVideo.mp4" type="video/mp4">
 
-                        </span>
+                            Your browser does not support embedded video. You can
+                            <a href="images/videos/artistIntroVideo.mp4">download Mary's introduction video</a> instead.
 
-                        <span class="heroVideoLabel">Meet Mary</span>
+                        </video>
 
-                        <span class="heroVideoNote">Video coming soon</span>
+                        <button type="button" id="heroVideoPlayButton" class="heroVideoPlayButton" aria-label="Play Mary's introduction">
+
+                            <span class="heroVideoPlayIcon" aria-hidden="true">
+
+                                <svg viewBox="0 0 24 24" focusable="false">
+                                    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.4" />
+                                    <path d="M10 8.3 16.5 12 10 15.7Z" fill="currentColor" />
+                                </svg>
+
+                            </span>
+
+                        </button>
 
                     </div>
+
+                    <figcaption class="heroVideoLabel">Meet Mary</figcaption>
 
                 </figure>
 
@@ -453,24 +499,16 @@
 
     <div class="aboutInner">
 
-        <!--
-            TODO — OWNER: a portrait of Mary has not been supplied yet. Replace the
-            placeholder frame below with a real photograph once one is available; the
-            framed treatment and shadow are already written.
-        -->
+        <figure class="aboutFigure">
 
-        <figure class="aboutFigure aboutFigurePlaceholder">
-
-            <div class="aboutPortraitPlaceholder" aria-hidden="true">
-
-                <svg class="aboutPortraitIcon" viewBox="0 0 24 24" focusable="false">
-                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
-                    <path d="M4 20c1.4-4 4.4-6 8-6s6.6 2 8 6" />
-                </svg>
-
-                <span class="aboutPortraitNote">Portrait coming soon</span>
-
-            </div>
+            <img
+                src="graphics/images/artistPhoto.png"
+                alt="Mary, the artist behind Paddle Creek Paints, in her home studio."
+                width="941"
+                height="1672"
+                loading="lazy"
+                decoding="async"
+            >
 
             <figcaption>Mary</figcaption>
 
@@ -505,6 +543,134 @@
 
 
 <!-- ============================================================
+     OFFER — 10% off the first custom piece
+
+     Two ways in, side by side. The left path is the existing
+     commission experience and only ever links down to it. The
+     right path asks for one thing: an email address. The code
+     itself is never shown here — it is assigned server-side and
+     arrives in the confirmation email.
+============================================================ -->
+
+<section class="offerSection" id="tenOffOffer">
+
+    <div class="offerInner">
+
+        <div class="offerWords">
+
+            <p class="offerEyebrow">A welcome from the studio</p>
+
+            <h2 class="sectionHeading offerHeading">
+                Get 10% Off
+                <em class="scriptLine">Your First Custom Piece</em>
+            </h2>
+
+            <p class="sectionLede">
+                Two ways to begin, and either one is a fine place to start.
+            </p>
+
+        </div>
+
+        <div class="offerPaths">
+
+            <article class="offerPath">
+
+                <h3 class="offerPathHeading">Already have a piece in mind?</h3>
+
+                <p class="offerPathNote">
+                    Tell me what you would like painted and what it should go on, and I will
+                    write back after the event. Your discount still applies.
+                </p>
+
+                <a class="buttonPainted offerPathAction" href="#startAPiece">
+                    Inquire About a Commission
+                </a>
+
+            </article>
+
+            <article class="offerPath offerPathClaim">
+
+                <h3 class="offerPathHeading">Just want the code?</h3>
+
+                <p class="offerPathNote">
+                    Leave your email and your discount code comes straight back to you.
+                    Nothing else is asked for.
+                </p>
+
+                <form class="offerForm" id="offerForm" novalidate data-clarity-mask="True">
+
+                    <label class="formField">
+
+                        <span class="formLabel">Email</span>
+
+                        <input
+                            class="formInput"
+                            type="email"
+                            name="offerEmail"
+                            id="offerEmail"
+                            autocomplete="email"
+                            inputmode="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+
+                        <span class="formError" data-error-for="offerEmail" aria-live="polite"></span>
+
+                    </label>
+
+                    <!--
+                        Spam trap. Hidden from sight and from assistive technology, and
+                        skipped by the keyboard — a person never fills this in, so anything
+                        that arrives with it filled is discarded server-side.
+                    -->
+
+                    <div class="formTrap" aria-hidden="true">
+
+                        <label for="offerCompany">Company</label>
+
+                        <input
+                            type="text"
+                            id="offerCompany"
+                            name="honeypot"
+                            tabindex="-1"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                    <button class="buttonPainted offerSubmit" type="submit">
+                        Claim My 10% Off
+                    </button>
+
+                    <p class="formDisclosure">
+                        By claiming your 10% off, you agree to receive your discount and
+                        occasional emails from Paddle Creek Paints about new pieces, custom
+                        work, and special offers. You can unsubscribe at any time. See our
+                        <a class="linkPainted" href="privacyPolicy.html">Privacy Policy</a>.
+                    </p>
+
+                    <p class="formStatus offerStatus" id="offerStatus" role="status" aria-live="polite"></p>
+
+                    <noscript>
+                        <p class="formNoscript">
+                            This needs JavaScript to send. Please write to
+                            <a href="mailto:paddlecreekpaints@gmail.com">paddlecreekpaints@gmail.com</a>
+                            instead and I will send your discount code by hand.
+                        </p>
+                    </noscript>
+
+                </form>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ============================================================
      COMMISSION — the inquiry form
 ============================================================ -->
 
@@ -525,7 +691,7 @@
 
             <p class="commissionDirect">
                 Or write to me directly at
-                <a class="linkPainted" href="mailto:hello@paddlecreekpaints.com">hello@paddlecreekpaints.com</a>
+                <a class="linkPainted" href="mailto:paddlecreekpaints@gmail.com">paddlecreekpaints@gmail.com</a>
             </p>
 
             <!--
@@ -547,12 +713,17 @@
         </div>
 
         <!--
-            TODO — OWNER: this form has no server endpoint. Until one exists, submitting opens
-            the visitor's own email client with the message pre-composed. Replace the handler in
-            js/siteJS.js with a real endpoint when the backend is chosen.
+            This form posts to the Google Apps Script Web App as a
+            'commissionInquiry', which records it in the CommissionLeads sheet and
+            sends two emails: an acknowledgement to the visitor and the full detail
+            to Mary. It is a separate funnel from the 10% offer below — different
+            sheet, different emails, and no discount code.
+
+            Until the endpoint is configured in js/siteJS.js it falls back to
+            opening the visitor's own mail client, and says so.
         -->
 
-        <form class="commissionForm" id="commissionForm" novalidate>
+        <form class="commissionForm" id="commissionForm" novalidate data-clarity-mask="True">
 
             <p class="formPieceRef" id="formPieceRef" hidden>
 
@@ -654,6 +825,22 @@
 
             </label>
 
+            <!-- Same spam trap as the offer form: never seen, never focusable. -->
+
+            <div class="formTrap" aria-hidden="true">
+
+                <label for="commissionCompany">Company</label>
+
+                <input
+                    type="text"
+                    id="commissionCompany"
+                    name="honeypot"
+                    tabindex="-1"
+                    autocomplete="off"
+                >
+
+            </div>
+
             <button class="buttonPainted commissionSubmit" type="submit">Send my idea</button>
 
             <p class="formStatus" id="formStatus" role="status" aria-live="polite"></p>
@@ -661,7 +848,7 @@
             <noscript>
                 <p class="formNoscript">
                     This form needs JavaScript to open your email app. Please write to
-                    <a href="mailto:hello@paddlecreekpaints.com">hello@paddlecreekpaints.com</a>
+                    <a href="mailto:paddlecreekpaints@gmail.com">paddlecreekpaints@gmail.com</a>
                     instead, and tell me what you would like painted and what it should go on.
                 </p>
             </noscript>
@@ -743,7 +930,7 @@
 
                 <ul>
                     <li><a href="#startAPiece">Start a piece</a></li>
-                    <li><a href="mailto:hello@paddlecreekpaints.com">hello@paddlecreekpaints.com</a></li>
+                    <li><a href="mailto:paddlecreekpaints@gmail.com">paddlecreekpaints@gmail.com</a></li>
                     <li class="footerPlain">Catlettsburg, Kentucky</li>
                     <li class="footerPlain">Serving the KY / OH / WV tri-state</li>
                 </ul>
@@ -753,6 +940,22 @@
         </nav>
 
         <p class="footerScript">made for you, from the heart.</p>
+
+        <div class="footerLegalArea">
+
+            <nav class="footerLegalLinks" aria-label="Legal">
+                <a href="privacyPolicy.html">Privacy Policy</a>
+                <a href="termsOfUse.html">Terms of Use</a>
+                <a href="doNotSell.html">Do Not Sell or Share My Personal Information</a>
+            </nav>
+
+            <p class="footerAnalyticsNotice">
+                This site uses analytics technologies to help us understand how visitors use the
+                website and improve the experience. See our
+                <a href="privacyPolicy.html">Privacy Policy</a> for details and privacy choices.
+            </p>
+
+        </div>
 
     </div>
 
@@ -874,6 +1077,15 @@
 
 </div>
 
+
+<!--
+    GA4 and Microsoft Clarity are configured (or not) in one place:
+    js/analyticsConfig.js. Both stay completely inert — no script tag is
+    even inserted — until a real ID is pasted in there. See that file for
+    the two things to fill in, and docs/progress.md for the analytics
+    section covering what is and isn't collected yet.
+-->
+<script src="js/analyticsConfig.js"></script>
 
 <script src="js/siteJS.js"></script>
 
